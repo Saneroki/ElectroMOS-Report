@@ -1,0 +1,348 @@
+
+
+
+Det følgende afsnit handler om de krav der bliver stillet for ElectroMOS. Det bliver vist i form af en brugsmønstermodel, klassediagram og specifikke krav. I afsnit om krav er der gået mere i dybden i hvordan ElectroMOS skal bygges op. 
+
+\section{Overordnet kravspecifikation}
+Kravene til systemet er:
+\begin{itemize}
+\item Brugeren skal være i stand at oprette, ændre og slette layouts af webshoppen.
+\item Systemet skal have login kontrol, det vil sige at kun autoriserede brugere kan logge ind på systemet og lave ændringer.
+\item Kunder skal være i stand til at hente den seneste udgave af webshoppen og få den fremvist på kundens computer.
+\end{itemize}
+
+
+\subsection{Brugsmønstermodel}
+Her i figur \ref{UC-CMS} og \ref{UC-Webshop} er vores brugsmønster for CMS og webshop systemet med fokus på interaktionerne fra systemadministratoren. En ændring der er blevet lavet siden inceptionsfasen er at handlingen “opret widget” er blevet fjernet. Det skyldes at man faktisk ikke opretter nye widgets, men man bruger prædefinerede widgets til at sætte ind på det gældende layout man arbejder på. Man kan til gengæld ændre på de enkelte widgets attributter og indehold, når widgets er sat på layouttet. Der kan også oprettes og tilgås flere layouts. Vi har valgt at se bort fra plannerne om implementering af fuldstændig brugerbestemmelse og brugerkreation af widgets (custom widgets), fordi vi ikke har udvikling af widgets funktionalitet i de gennemgåede iterationer. Dette vil lægge i sener iterationer og specielt i konstruktionsfasen.
+
+
+\newpage \twocolumn
+%\paragraph{Identificerede brugsmønstre}
+
+%det her skal stå over de nederstående figure, men det gør den ikke i preview af en eller anden grund.
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/krav/UC-CMS.png}
+  \caption{Opdateret Brugsmønsterdiagram for CMS.}
+  \label{UC-CMS}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/krav/UC-Webshop.png}
+  \caption{Opdateret Brugsmønsterdiagram for Webshop}
+  \label{UC-Webshop}
+\end{figure}
+\FloatBarrier
+\onecolumn
+
+\paragraph{Aktører}
+Aktørene i systemet består af systemadministrator, indholdsadministrator(som har de samme rettigheder og egenskaber inde for denne Brugsmønster som system administrator. Derfor er indholdsadministratoren som aktør udeladt i diagrammet) og kunde.
+Systemadministrator har alle adgangsrettigheder, så han/hun er den primære aktør. 
+Systemadministratoren har flest funktioner i systemet, og det skyldes at systemadministratoren skal være i stand til at regulere alt hvad er bliver vist til kunden på webshoppen.
+
+
+\section{Detaljeret Kravspecifikation}
+Her under bliver specifikke krav til systemet defineret for at afgrænse systemet og dens funktioner.
+\subsection{funktionelle krav}
+Når der snakkes om funktionelle krav, snakkes der om krav, der omhandler, hvad man ønsker et system bør gøre. Her er der ikke interesse i, hvordan denne funktion bliver udført, men at den bliver udført, og selvfølgelig efter hensigten. Hvis der på en eller anden måde ønskes, at systemet skal kunne køres på en gammelt system, eller et andet krav der ikke henvender sig direkte til systemet funktionalitet, tales der om en ikke-funktionel krav. Dette er gennemgået længere nede.
+\newline
+
+\begin{enumerate}
+\item\textbf{User interface}
+	\begin{enumerate}
+	\item Administrator skal være i stand til at ændre sidens layout uden brug af kode.
+	\item Administrator kan styre hvilke moduler(Widgets) der er placeret hvor på layouttet.
+	\item Administrator skal kunne sætte maks og minimum-størrelser for moduler.
+	\item Administrator kan administrere sider på webshoppen.
+		\begin{enumerate}
+	    \item En side kan laves fra bunden op, som brugerdefineret layout.
+		\item Administrator skal kunne gemme redigerede skabeloner og sider bygget op fra bunden til brug som skabeloner senere hen.
+		\item Administrator skal kunne være i stand til at ændre/slette eksisterende sider.
+		\item Administrator skal kunne lave nye artikler
+	    	\begin{enumerate}
+			\item En artikel skal kunne skrives i fritekst og kan indeholde formateringer af teksten.
+			\item Administrator skal også være i stand til at indsætte billeder, multimedier, figurer og links ind i teksten til artiklen.
+	    	\end{enumerate}
+		\item Administrator skal være i stand til at ændre/slette eksisterende artikler
+	\end{enumerate}
+	\end{enumerate}
+
+\item\textbf{User handling}
+	\begin{enumerate}
+	\item CMS skal samle oplysninger omkring hjemmesiden, system administrator skal have adgang til denne data.
+	Denne data inkluderer
+		\begin{enumerate}
+		\item Bruger information
+		\item Hjemmeside trafik
+		\item Købshistorik
+		\item Produkter kunden muligvis kunne være interessert i (dette liger inde under brugerinformation)
+		\end{enumerate}
+	\item Administrator skal være i stand til at slette eller ændre brugeres oplysninger.
+	\end{enumerate}
+
+\item \textbf{Login}
+	\begin{enumerate}
+	\item Administrator skal kunne logge ind på systemet, med alle administrator rettigheder tildelt til ham/hende.
+	\item Indholdsadministrator skal også kunne logge ind på CMS'en, med lige så mange rettigheder i CMS'en men ikke andre steder end CMS, PIM og DAM. 
+	\end{enumerate}
+
+\item\textbf{Settings}
+	\begin{enumerate}
+	\item Administrator skal være i stand til at styre systemet og alle indstillinger på systemet.
+	\item Administrator skal kunne slukke og tænde for systemet og dele af systemet.
+	\end{enumerate}
+    
+\item\textbf{Preferencer}
+	\begin{enumerate}
+	\item Administrator skal kunne vælge imellem valutaer til visning af priserne.
+	\end{enumerate}
+\end{enumerate}
+
+
+\subsection{ikke-funktionelle krav}
+	Her er beskrevet de ikke-funktionelle krav for systemet. I modsætningen til funktionelle krav, så er ikke-funktionelle krav nærmere kvaliteten og begrænsningen af hvad systemet gør. 
+
+\begin{enumerate}
+\item \textbf{Functionality}
+	\begin{enumerate}
+	\item Det skal ikke være muligt for udefrakommende at udnytte fejl i systemet. 
+	\item Fault tolerance: Et IP-adresse skal blokeres, hvis dette ip ligger stress på serveren, at performance bliver reduceret til et punkt hvor sidens responstid er nedsat.
+	\item IP blokeres hvis login processen fejler mere end 10 gange.
+	CMS skal kun kunne tilgåes af medlemmer med the relevante brugerrettighed.
+	\item Robustness: Systemet skal kunne modstå angreb som DDOS og Slow loris.
+	\item Systemet skal sanitize alle manuelle bruger input, for at forebygge sql injection
+	\end{enumerate}
+
+\item\textbf{Usability}
+	\begin{enumerate}
+	\item Emotional factors: Oprettelse og ændringer af sider skal føles overraskende nemt.
+	\item Accessibility: Brugeroverfladen skal være nemt læselig, overskuelig og forståeligt
+	\item Dependency: Systemet skal kunne arbejde godt sammen med Webshoppen, Produktinformations Management og Digital Asset Management, både for at bruge deres service men også for at servicere dem.
+	\item Deployment: Systemet skal være nemt at adoptere, det kræver ikke mere end 10 timer undervisning i systemet 	for at kunne udnytte det fuldt ud. 
+	\item Platform compatibility: Systemet skal kunne køre på alle moderne platforme
+	\item Reusability: Det skal være muligt at gemme sider som templates der kan bruges til at hurtigt oprette 	lignende sider eller bruger.
+	\item Dokumentation: Der skal være et udførlig dokumentation i form af et rapport til produktet
+	\end{enumerate}
+
+\item \textbf{Reliability}
+	\begin{enumerate}
+	\item Backup: for hvert 10. minut skal der laves et backup af databasen for statistikker og salgsinformationer.
+	\item Når en fejl optræder i systemet eller når data ikke er tilgængelig skal systemet sende en logfil til Værtssystemet, klar til at kunne læses af Systemadministrator.
+	\item Serverne skal have en høj tolerance for fejl, hvis en server bryder sammen, skal der være backup server der tager lasten, indtil den anden server er blevet repareret. Server og backup skal dele last, så der er mindre chance for overanstrenglse.
+	\end{enumerate}
+
+\item\textbf{Performance}
+	\begin{enumerate}
+	\item Response tid: til åbning og oprettelse af en side skal foregå på en periode  på under 0.5 sekunder.
+	\item CMS skal kunne servicere flere instanser af webshoppen med flere hundrede sider per sekund.
+	\end{enumerate}
+
+\item\textbf{Supportability}
+	\begin{enumerate}
+	\item Programmeringssprog: Java, JavaFX og Java Database Connectivity (JDBC).
+	PostgreSQL er det fortrukkende database program.
+	\item Det skal være nemt at vedligeholde pages og bruger på et overskuelig måde, Programmeringskode skal være veldokumenteret
+	%\item Det skal være muligt at tilføje nye funktioner til systemet uden at ændre eksisterende kode. %temmelig ambitiøst, da det vil betyde at alle mulige funktioner skal kunne laves på forhånd VIA kode, før givet videre til kunden til at vælge til eller fra.dette krav bliver udeladt
+	\item Det skal være nemt at ændre i eksisterende kode, på en måde at det påvirker så få kåde som muligt %hvad?
+	\item Systemet skal være i stand til at skalere med Electroshoppens krav og deres server. Det skal være muligt at oprette uendelig mange sider, med uendelig meget indhold, der kun er begrænset af kundernes computer og servernes ydeevne.
+	%\item CMS skal selv styrer hvornår en vare sendes fra leverandøren eller fra en butik for at reducere transportudgifter. %fjernet fordi jeg mener det er point of sale der styre den process -Andreas
+	\end{enumerate}
+\end{enumerate}
+
+
+\subsection{Brugsmønster beskrivelser}
+
+Brugsmønstrene fra inceptionsfasen er blevet opdateret. Der er blevet fjernet og tilføjet brugsmønstre siden inceptionsfasen,  og det har resulteret i nye brugsmønsterbeskrivelser er blevet lavet og andre beskrivelser er blevet opdateret, for at passe til de nye brugsmønstre. De nye brugsmønstre er: Edit Widgets, delete webpage, get layout, create new webpage.
+
+\noindent De brugsmønstre der er opdateret siden inceptionsfasen er: login(nu login to CMS)(figur \ref{Elab:UC-Login} på side \pageref{Elab:UC-Login}) og update webpage. "login to CMS"(figur \ref{Elab:UC-Login} på side \pageref{Elab:UC-Login}) og "Update Webpage"(figur \ref{Elab:UC-OpdatereSide} på side \pageref{Elab:UC-OpdatereSide}). I brugsmønsteret "opdater side" figur (figur \ref{Elab:UC-OpdatereSide} på side \pageref{Elab:UC-OpdatereSide}) 
+
+\noindent De valgte brugsmønster er bygget op fra vores brugsmønstermodel \ref{UC-CMS} og \ref{UC-Webshop} på side \pageref{UC-CMS}, ud fra den model, blev der valgt de brugsmønster der gave mest mening at arbejde med, for at have en funktionel CMS system. dette betyder at disse fire detaljeret brugsmønster, er blevet implementeret i koden. dog er der kun lavet analyse og design af CMS og Webshop funktionalitet, da disse brugsmønster var de vigtigste funktioner. Login på CMS ville blive prioriteret højere i Konstruktions fasen.  
+
+
+%brugsmønster for opdater side
+\begin{table}[H]
+    \begin{tabular}{|p{5cm}|p{10cm}|}
+        \hline
+        Brugsmønster: & Opdater en side \\ 
+        \hline
+        ID: & b04 \\ 
+        \hline
+        Kort beskrivelse: & Giver indholdsadministratorer mulighed for at opdatere en side. \\ 
+        \hline
+        Primære aktører: & Indholdsadministrator. \\ 
+        \hline
+        Sekundære aktører: & CMS database \\ 
+        \hline
+        Prækonditioner: & Aktøren er logget ind via. brugsmønstret: Login til CMS (ID: b01) \\ 
+        \hline
+        Main flow: &    
+        \begin{minipage}{10cm}
+                \begin{enumerate}
+                    \item Aktøren vælger en side, som skal ændres på.
+                    \item Aktøren opdaterer siden som ønsket via et visuelt værktøj og brug af widgets integreret i systemet.
+                    \item Aktør får preview af siden.
+                    \item Aktør godkender og publisher siden.
+                    \item Systemet gemmer siden i database
+        \end{enumerate}
+        \end{minipage} \par \\
+
+        \hline
+        Postkonditioner: & 
+        	\begin{minipage}{10cm}
+                \begin{enumerate}
+                    \item Siden er gemt i databasen og kan tilgås fra systemet, der repræsenterer webshoppen.
+                    \item Data bliver opdateret således, at ingen duplikater opstår.
+        		\end{enumerate}
+        \end{minipage} \par \\ \\ 
+        \hline
+        Alternative hændelsesforløb: & - \\ 
+        \hline
+    \end{tabular}
+    \caption{Her ser vi en detajleret brugsmønster beskrivelse for handlingen “opdater side”. Samme brugsmønster er også vist i inceptionsdokumentet.}
+    \label{Elab:Tabel:UC-OpdatereSide}
+\end{table}
+
+
+%brugsmønster for login
+\begin{table}[H]
+    \begin{tabular}{|p{5cm}|p{10cm}|}
+        \hline
+        Brugsmønster: & Login til CMS \\ 
+        \hline
+        ID: & b01 \\ 
+        \hline
+        Kort beskrivelse: & Før layouts kan tilgås skal der opnås adgang via login. \\ 
+        \hline
+        Primære aktører: & Indholdsadministrator. \\ 
+        \hline
+        Sekundære aktører: & Login Database. \\ 
+        \hline
+        Prækonditioner: & - \\ 
+        \hline
+        Main flow: &    
+        \begin{minipage}{10cm}
+                \begin{enumerate}
+                    \item Aktøren bliver bedt om brugernavn, password og server information.
+                    \item Efter indtastning og en trykken på “Login”, systemet tjekker inputets integritet.
+                    \item Så længe: informationerne indtastet er ukorrekte:
+                    	\begin{enumerate}
+                    	\item En fejlmeddelelse opstår, der oplyser om de forkert informationer.
+                       	\item Aktøren får mulighed for at indtaste igen.
+                    	\end{enumerate}
+                    \item Aktøren bliver ført videre til layoutredigeringsværktøjet.
+        \end{enumerate}
+        \end{minipage} \par \\
+
+        \hline
+        Postkonditioner: & 
+                     Aktøren får mulighed for tilføjelse, opdatering og fjernelse af layouts. \par \\ \\ 
+        \hline
+        Alternative hændelsesforløb: & - \\ 
+        \hline
+    \end{tabular}
+    \caption{Opdateret brugsmønster diagram for oprettelsen af en ny side.}
+    \label{Elab:UC-Login}
+\end{table}
+
+
+
+
+
+%brugsmønster for opret side
+\begin{table}[H]
+    \begin{tabular}{|p{5cm}|p{10cm}|}
+        \hline
+        Brugsmønster: & Opret en side \\ 
+        \hline
+        ID: & b02 \\ 
+        \hline
+        Kort beskrivelse: & En generel brugsmønster, der giver administratoren adgang til at tilføje en ny side til webshoppen. \\ 
+        \hline
+        Primære aktører: & Indholdsadministrator. \\ 
+        \hline
+        Sekundære aktører: &  \\ 
+        \hline
+        Prækonditioner: & Indholdsadministratoren er logget ind via. brugsmønstret: Login (ID: 1) \\ 
+        \hline
+        Main flow: &    
+        \begin{minipage}{10cm}
+                \begin{enumerate}
+                    \item Aktøren vælger “Ny side”.
+                    \item Systemet opretter en ny side.
+                    \item Systemet sender aktøren videre til en visuel sideredigeringsværktøj for den nyoprettede side.
+                    \item Brugeren tilføjer / fjerner indhold til siden.
+                    \item Brugeren afslutter ved enten at gemme indhold eller at gemme og afslut.
+        \end{enumerate}
+        \end{minipage} \par \\
+
+        \hline
+        Postkonditioner: & 
+        	\begin{minipage}{10cm}
+                \begin{enumerate}
+                    \item En ny side er oprettet og tilføjet til databasen.
+                    \item Siden er enten synlig for brugerne på hjemmeside, alt efter om dette er valgt.
+        		\end{enumerate}
+        \end{minipage} \par \\ \\ 
+        \hline
+        Alternative hændelsesforløb: & - \\ 
+        \hline
+    \end{tabular}
+    \caption{Opdateret brugsmønster diagram for login til CMS.}
+    \label{Elab:UC-createPage}
+\end{table}
+
+%brugsmønster for LoadPage
+\begin{table}[H]
+    \begin{tabular}{|p{5cm}|p{10cm}|}
+        \hline
+        Brugsmønster: & loadPage \\ 
+        \hline
+        ID: & b06 \\ 
+        \hline
+        Kort beskrivelse: & Beskrivelse af flowet over hvordan en kunde tilgår sider der er bestemt gennem CMS \\ 
+        \hline
+        Primære aktører: & Kunde \\ 
+        \hline
+        Sekundære aktører: & \\ 
+        \hline
+        Prækonditioner: & Forbindelse til database skal være oprettet
+2.  	Bruger skal have adgang til internettet \\ 
+        \hline
+        Main flow: &    
+        \begin{minipage}{10cm}
+                \begin{enumerate}
+                    \item kunde åbner for hjemmesiden.
+                    \item Forside loades.
+                    \item Kunde vælger ny side.
+                    \item Kunden får adgang til valgte side.
+        \end{enumerate}
+        \end{minipage} \par \\
+
+        \hline
+        Postkonditioner: & 
+        	\begin{minipage}{10cm}
+                \begin{enumerate}
+                    \item Kunden har adgang til alle sider der er defineret i databasen.
+                    \item Alle widgets er indlæst på deres som defineret i CMS.
+        		\end{enumerate}
+        \end{minipage} \par \\ \\ 
+        \hline
+        Alternative hændelsesforløb: & - \\ 
+        \hline
+    \end{tabular}
+    \caption{Her ser vi en detajleret brugsmønster beskrivelse for handlingen “b06: load page”(hent side).}
+    \label{Elab:UC-OpdatereSide}
+\end{table}
+
+\subsection{Domænemodel}
+  Den opdaterede domænemodel i figur \ref{fig:updatedDomainModel} er baseret på Den domænemodel der blev lavet i Inceptionsrapporten. Der er ændret en del af modellen, for at sørge for den kun viser alle de aktuelle klasser i systemet. I den tidligere model var der klasser for at holde styr på login og brugerhåndtering. Det er blevet fjernet da der sat mere fokus på at lave funktionalitet i CMS'en til fordel for at systemet kan oprette og redigere sider i webshoppen.
+En anden opdatering fra inceptionsfasen er at modellen nu er mere strømlinet og står mere parallelt til tre-lagsmodellen. Det går fra præsentation til logik, og så til persistens.
+
+\begin{figure}[H]
+	\includegraphics[height=\textheight]{elaborationsdokumentet/figurer/updated_domain_Diagram.png}
+    \caption{Opdateret Domæne model}
+    \label{fig:updatedDomainModel}
+\end{figure}
+
+\section{Opsumering}
+I dette kapitel har vi gennemgået krav for systemet til Elektroshoppen. de overordnede krav er: brugeren skal være i stand til at oprette, redigere og slette layouts af webshoppen, systemet skal have login kontrol på database, og kunder skal være i stand til at hente den seneste udgave af webshoppen og få den fremvist på kundens computer. Der er blevet fremstillet brugsmønstermodel med detajleret brugsmønster beskrivelser, og der er lavet domænemodel der viser et udkast til klassediagrammet. Der er skrevet en detajleret kravspecifikation der mere i dybden med funktioner og afgrænsninger for systemet.
+\FloatBarrier

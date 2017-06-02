@@ -1,0 +1,142 @@
+I Inceptions dokumentet blev der udviklet domæne model og brugsmønster, som bruges til at udvikle struktur af programmet. Dette gøres igennem brug af flere modeller, der hjælper med at identificere pakker, klasser, metoder og attributter til programmet. I denne sektion vil der vises hvordan der op bygges en struktur af webshoppen og CMS systemet. Hvordan de forskellige lag snakker sammen med hinanden. Og hvilken objekter håndtere det data der skal bruges fra databasen.
+
+
+\section{Arkitekturanalyse}
+Arkitekturen for det overordnet systemarkitektur er blevet defineret af Electroshoppen. Denne model blev udleveret sammen med case beskrivelsen, hvor ønsker for webshoppen blev specificeret. Da gruppens fokus ligger i CMS, har vi primært fokus på denne del. Men da hele systemet i et omfang påvirker hinanden, ville det give mening i senere faser stadig at tage højde for samarbejde mellem CMS, Webshoppen, PIM og DAM. 
+
+\section{Pakkediagram} \label{Pakkediagram}
+Pakke diagrammet er baseret på at vi bruger 3 lags strukturen for både webshoppen og for CMS systemet. Dette gør at man kan skifte lag ud på begge systemer uden at resten af programmet bliver påvirket. CMS og webshoppen har kun kommunikation gennem databasen. Da det ikke skal være nødvendigt at CMS kører for at webshoppen kan loades. 
+
+
+\twocolumn
+\begin{figure}[H]
+  \includegraphics[width=9cm, height=7cm]{elaborationsdokumentet/figurer/analyse/Pakkedia-Webshop.png}
+  \caption{Pakkediagram af Webshop}
+  \label{Pakkediagram-Webshop}
+\end{figure}
+
+
+\begin{figure}[H]
+  \includegraphics[width=9cm, height=7cm]{elaborationsdokumentet/figurer/analyse/Pakkedia-CMS.png}
+  \caption{Pakkediagram af CMS}
+  \label{Pakkediagram-CMS}
+\end{figure}
+\onecolumn
+
+
+
+De to systemer er blevet designet tilnærmelsesvis ens. Begge er blevet lavet med tanken om at alt kommunikation skal foregå i mellem mediators/controllers der står for kommunikation mellem de forskellige lag, dette betyder at hvis et lag bliver skiftet ud bliver de andre ikke påvirket da de bare skal implementere controller på samme måde.
+I CMS systemet er der en controller placeret i hver pakke, der sørger for kommunikationen til det lag over det. Det betyder at lag kun kan kommunikere med lag under det. Hvilket sørger for at alt data kommer igennem business laget, der sørger for at intet data kommer fra GUI til database uden at have været håndteret i businesslaget først. På den måde kontrollere du altid hvilket type data der kommer ud og ind i dit system.
+Webshoppen er bygget op efter samme princip, men i stedet for at mediators er placeret i deres respektive mapper, er de blevet placeret i en mappe for sig selv hvilket står for at snakke med en logik i hvert lag. Dette betyder at vi har en Business mediator der står for alt kommunikation til business laget, og en database mediator der står for alt kommunikation til database laget. dette betyder at et lag bare skal snakke med mediator pakken, for at komme i kontakt med et andet lag. og på den måde behøver man ikke include fra andet end mediator pakken
+alt teori omkring mediators er blevet fundet på ~\cite{mediator} 
+
+
+
+\section{Klasse diagram}
+Pakke diagramet blev udviklet med henblik på at vi opbygger to separate Programmer. Dette betyder at der er blevet dannet et klasse diagram for både webshoppen og CMS systemet. 
+
+I klassediagrammer bliver der identificeret hvilket attributter og metoder de forskellige klasser indeholder. derudover ses der hvordan hver klasse er forbundet til systemet. når der udvikles et klasse diagram, er det oftest opdateret over flere iterationer, da det er svært at identificerer alle metoder i første omgang. i analyse vises først udkast af klassediagrammet. hvor design fasen færdigøre designet af klassediagrammet. 
+
+Begge er blevet udviklet med referencer til domain modellen. Det første klasse diagram der blev udviklet, var hovedsageligt baseret på CMS systemet, og hvordan side data blev gemt ned i database. Men efter overvejelser, var der enighed om at udvikle et ekstra diagram for klasser i webshoppen, specielt når design valget varier en smule. 
+
+Ideen var at CMS systemet kunne gemme alt information omkring page layout. Men efter realisering af designet i programmet, blev der konkluderet at dette ikke var realistisk. Dette betød at klasse diarammerne oprindelige design måtte omstrukturere, så det kun matche vores alternative løsning. Strukturen baseret på vores nyeste version af programmet:
+\subsubsection{CMS klassediagram}
+
+\begin{figure}[H]
+  \includegraphics[width=14cm, height=16cm]{elaborationsdokumentet/figurer/analyse/Copy_of_WebshopUML.png}
+  \caption{Klassediagram af Webshop}
+  \label{fig:Classdiagram-CMS}
+\end{figure}
+
+CMS systemet er bygget op fra at Logic sørger for at alt data bliver håndteret som det skal. Når den loader data fra gui laget, gemmer den alt data der er relevant for side layout, og den enkelte widgets layout. Dette data bliver henholdsvis gemt i Page og BusinessWidgets. Page indeholder en ArrayList med BusinessWidgets, så vi ved at denne page indeholder disse widget. Når vi har de ønskede widgets i vores page array. Sender vi SQL  med "insert data" videre til database mediator, der sørger for at det bliver sendt videre ned til databasen. Der var et ønske om at holde strukturen så simple som muligt, og derved give god mulighed for at tilføje kompleksitet til de forskellige widgets, uden at skulle tænke over at bygge hele strukturen om. 
+
+\subsection{Webshop klassediagram:}
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth, height=16cm]{elaborationsdokumentet/figurer/analyse/Klasse_Diagram_Analyse.png}
+  \caption{Klassediagram af CMS}
+  \label{fig:Classdiagram-webshop}
+\end{figure}
+
+Webshoppen er designet ud fra CMS systemet, den eneste forskel er at webshoppen primærer fuktion er at hente relevant data fra valgte sider. Det betyder at funktioner som at gemme til databasen, eller slette fra databasen ikke er nødvendigt. Dog er et problem at webshoppen hurtigt kan komme til at skulle returnere store mængder af data. Derfor skal webshoppen have en fornuftig måde at kommunikere mellem lagene. Der laves to interfaces  en som mediators skal implementere, dette interface skal indeholde alle de metoder der er nødvendige for at websiden kan vise en side. Hver mediator har et logic objekt de snakker med, disse logic objekter skal have implementeret metoder fra colleague interface. De to interface kan nemt implementere flere metoder, når webshoppen bliver mere kompleks og får implementeret flere funktioner. Dette var det primære design valg bag webshoppen, at det skulle være nemt at arbejde videre på, da den henter funktioner fra flere systemer.
+
+\section{Den dynamiske analyse model}
+Med de opdateret detaljerede brugsmønsterbeskrivelser defineret i punkt 3.4.1 af elaborationsdokumentet, for at kunne definere hvilket metoder programmet skal indeholde, skal der udvikles et sekvensdiagram for de udvalgte brugsmønstre. 
+
+Disse sekvensdiagrammer er bygget op ud fra brugsmønster realiseringer. dette betyder at der arbejdes ud fra de detaljeret brugsmønster der blev identificeret i inceptionsdokumenetet. på denne måde kan flowet igennem hver eneste brugsmønster blive visualiseret, og på den måde give et bedre overblik over hvordan klasserne snakker sammen med hinanden. Som udgangspunkt bliver hver klasse identificeret som en livslinje. hvert sekvensdiagram starter med et kald fra en aktør til GUI laget. hvorefter kaldet bliver sendt videre til det rigtige sted. nå kaldet har nået sin position, og har udført sin respektive opgave, returner den til klassen der kaldte på den. .på denne måde sikre man sig der er et ordenligt flow i programmet. og intet bliver lavet uden nogen grund. både if, loop, metoder, return værdier og lignende bliver identificeret i disse diagrammer. 
+~\cite{A&N} chapter 12.
+
+\subsection{CMS (Update Webpage):}
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/analyse/Update_Webpage.png}
+  \caption{Sekvensdiagram af CMS til at opdatere en side}
+  \label{fig:Sekvensdiagram-CMS-Opdatesite}
+\end{figure}
+
+Med formål at gemme ændringerne på en given side, bliver ovenstående kæder af metoder eksekveret. Der begyndes med at tjekke, om siden allerede eksisterer. Man ved at siden ikke eksisterer, hvis “-1” bliver returneret. Dette bliver ofte benyttet i andre lignende tilfælde, såvel som - I andre tilfælde vil “null” primært blive brugt. Bl.a. når et objekt bliver returneret.
+I det tilfælde, at den ikke eksisterer bliver den tilføjet til databasen.
+Derefter bliver der sørget for, at alle .fxml filernes navne bliver registreret, hvorefter hver widget bliver gemt. Dér bliver der benyttet selvkald, i det at objektet kalder en metode i sig selv. Se figur \ref{fig:Sekvensdiagram-CMS-Opdatesite} for en diagram der illustrerer processen.
+
+\subsection{CMS (Create new Webpage):}
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/analyse/Create_new_Webpage.png}
+  \caption{Sekvensdiagram til CMS, der beskriver skabelsen af en ny side}
+  \label{fig:Sekvensdiagram-CMS-createSite}
+\end{figure}
+
+I vejen til udførslen af metoden, vil denne blive aktiveret, når ’create’-knappen trykkes. Bemærk at der først tjekkes på, om siden eksisterer, da dette bliver brugt til at udspørge brugeren af systemet, om vedkommende ønsker at overskrive. Hvis dette er tilfældet, sørgedes der for at clear alle eksisterende elementer mht. Widgets og Node, så ingen ”spøgelseselementer” opstår.
+Bemærk: I skabelsen af ny side, bliver der ikke skabt en side før der trykkes ”Accept”. Grunden til dette er, at hvis der alligevel skulle fortrydes, kan dette bliver gjort ved at vælge et nyt layout. Se figur \ref{fig:Sekvensdiagram-CMS-createSite} for en diagram der illustrerer processen.
+
+\subsection{CMS (Delete Webpage):}
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/analyse/Delete_Diagram.png}
+  \caption{Sekvensdiagram til CMS, der beskriver fjernelse af en side}
+  \label{fig:Sekvensdiagram-CMS-deleteSite}
+\end{figure}
+
+Efter knappen ”delete” er trykket, vil systemet først finde id’et på den angivne side. Derefter bliver removePage() eksekveret. Før slettelsen af selve siden på database-siden, er det behøvet at diverse foreign keys forbindelser bliver fjernet før. Dette bliver gjort i Logik-klassen. Uden dette ville der opstå en fejl, der forhindrer i en fuldstændig fjernelse af denne. Se figur \ref{fig:Sekvensdiagram-CMS-deleteSite} for en diagram der illustrerer processen.
+
+\subsection{CMS (Get Layout):}
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/analyse/Edit_Diagram.png}
+  \caption{Sekvensdiagram til CMS, der beskriver hentning af en side}
+  \label{fig:Sekvensdiagram-CMS-editDiagram}
+\end{figure}
+
+Det at hente layouts fra databasen er en helt anden historie. Først bliver de hentet fra databasen via. loadWidgetRepresentation(), og da dataene kommer i tal- og strengværdier skal de først laves om til brugbare WidgetRepresentations. Dette sker lige efter hentning i Logik-klassen. WidgetRepresentation er en meget uintelligent klasse, da den primært indeholder information omkring placering og navn. Derefter bliver disse opbevaret i et WidgetHandler-objekt, hvilket har til formål at kunne skabe en forbindelse mellem WidgetRepresentation og den faktiske Widget. Derefter er der flere ting, der bliver eksekveret på Pageplanner-delen. Først hentes repræsentationerne, hvorefter disse bliver konverteret til faktiske Widgets. Efter disse er konverterede føjes de til layoutet. Se figur \ref{fig:Sekvensdiagram-CMS-editDiagram} for en diagram der illustrerer processen.
+
+\subsection{Webshop (Load page):}
+
+\begin{figure}[H]
+  \includegraphics[width=15cm,height=15cm]
+  {elaborationsdokumentet/figurer/analyse/webshop-sekvens-del1.png}
+  \caption{Sekvensdiagram af Webshop til at load af en side del 1}
+  \label{fig:Sekvensdiagram-CMS-Loadsite11}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=15cm,height=10cm]
+  {elaborationsdokumentet/figurer/analyse/webshop-sekvens-del2.png}
+  \caption{Sekvensdiagram af Webshop til at load af en side del 2}
+  \label{fig:Sekvensdiagram-CMS-Loadsite12}
+\end{figure}
+
+
+
+Sekvens diagrammet for webshoppen er baseret på brugsmønsteret Load Page i webshoppen. Design valget er opbygget på, aktøren skal kalde på så lidt som muligt, for at få webpage layout kaldt. Dette betyder at det eneste kunden egentlig skal gøre, er at vælge hvilken side han/hun vil gennemse. Derfor laves der kun et metodekald, der skal bruge et side-ID som variable. Med dette metodekald, henter databaselogikken  alt relevant data for denne side op fra databasen. Database logikken laver derefter et form for callback til business logikken, som sørger for at lave widgets med de rigtige værdier. Disse widget bliver tilføjet til en arraylist. WidgetSelector sørger derefter for at alle relevante filnavne og funktioner omkring widgets, bliver hentet fra databasen. dette data bliver brugt til at generere et standard widget, der indeholder navn, og en relevant node for det filnavn. Disse nodes er en FXML fil der matcher de FXML filer der er blevet brugt i CMS systemet. Der laves en node for hver Business Widget, som bliver placeret ind i webshoppens GUI, hvorefter den justeres baseret på attributer i BusinessWidget. Med denne opdeling er målet at alt SQL og database relateret er i databaselaget. Businesslaget indeholder informationen omkring side og dens enkelte widgets. Oversat til data som GUIlaget kan hente op og justere standard widgets med. Alt kommunikation mellem lagende køres igennem mediators. %Figuren på næste side illustrerer hvordan dette forløb udføres. % der er ikke nogen figur! - Andreas
+
+\clearpage
+\section{Opsummering}
+
+Der er lavet en analyse for både CMS og webshoppen, da de fungere som to separate systemer. Men på mange måder er de opbygget ens. Den primærer forskel er at Webshoppen skal tage højde for andre systemer skal sende data til den, hvilket betyder der skal være plads til flere udvidelser i systemet. CMS derimod har det primær fokus, at få data korrekt ned i databasen, uden brugerne skal tænke over hvad der sker under brugerinterfacet. 
+Dette arbejde er et resultat af flere iterationer af strukturopbygning, og strukturen har ændret sig fra første udkast i inceptionsfasen til nu. Dette betyder også at alle diagrammer er blevet opdateret løbende som der er blevet taget flere beslutninger omkring strukturen.
+
+Sekvensdiagrammerne illustrer hvordan programmet kommunikerer mellem klasserne, dog er der ikke taget højde for mediator klassen, da dette design valg kom meget sent ind, og ikke er så nødvendigt for forståelse af sekvensdiagrammet.
+Klassediagrammet har ikke implementeret metoder, da dette er blevet gjort i designfasen og sekvensdiagrammer, som er implementeret i koden. dog opfodre ~\cite{A&N} side 346 at det allerede sker i analyse. Vi valgte primært at holde designdiagrammet opdateret, som der blev identificeret nye metoder til programmet.
+
+
+\FloatBarrier

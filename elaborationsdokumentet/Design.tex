@@ -1,0 +1,325 @@
+Dette kapitel handler primært om Designmodellen der er udviklet på baggrund af analysemodellen. I designmodellen gåes der mere i dybten med specifikke designvalg, tekniske løsninger og er udformet mere detalieret, forhold til analysefasen, så det kan bruges til implementering af software løsningen. Som beskrevet i \cite{A&N} side 334 er Designmodellen opdelt i følgende dele:
+\begin{itemize}
+\item Design af subsystemer.
+\item Design af klasser.
+\item Interfaces.
+\item Brugsmønsterrealiseringsdesign og.
+\item Et første udkast af et udgivelsesdiagram.
+\end{itemize}
+Et fokuspunkt under designfasen er udvikling af interfaces til at løsrive (decouple) subsystemer fra hinanden, så de kan udvikles parallelt og skiftes ud, hvis det bliver nødvendig. 
+
+Projektet består af to seperate programmer. Et er selve løsningen på Content Managemnt System som er designet til at producere hjemmesider uden kendskab til programmering. Det andet program er webshoppen som er udviklet for at fremvise den hjemmeside som det første program producere. Derfor er Designmodellen også inddelt i de to seperate sektioner for hvert program. Projektets fokus er på CMS løsningen. Derfor er også Designmodellen for CMS'en nærmer beskrevet som for webshoppen.
+
+Delafsnittet om Software Arkitektur omhandler opbygningen af software løsningen. UML deler software op i flere forskellige Arkitekturiske "views" som beskriver hver deres del af softwaren og tilsammen giver et overblik over hele løsningen. Dette afsnit er videre inddelt i Softwarearkitekturdiagrammet som giver et overblik over de dele der indgår i softwareløsningen. I Arkitektonisk interaktiondsdiagramer er der beskrevet nærmere, hvordan alle disse dele interagere med hindanden for at opfylde den pågældende opgave af et Content Management system.
+
+Designen af klasserne, subsystemer og interfaces bliver beskrevet nærmere under delafsnittet om den statiske designmodel. Her findes også to Navigationsdiagrammer der visualisere hvordan brugeren kan bruge brugergrænsefladen til at få realiseret de brugsmønster der er nævnt i analysemodellen. Til sidst i dette afsnit er udgivelsesproceduren beskrevet nærmere.
+
+\clearpage
+\section{Designmodellen af CMS}
+Designmodellen af CMS og Webshop er baseret på samme arkitektur og ligner hinanden meget. Denne sektion er inddelt i 3 afsnit. Det første er \ref{Software Arkitektur} Software Arkitektur som gennemgår Unified Process teorien om UML's og systemets lagdelt Software arkitektur.
+Afsnit \ref{Statisk designmodel} går i dybde med designklasser, navigation af brugergransefladen og designvalg af databasen og afslutter med et første udkast af en "Deployment diagram" (Udgivelsesdiagram).
+Den sidste afsnit \ref{Dynamisk designmodel} af denne sektion er den Dynamiske designmodel der forklare brugsmønster-realiserings-design og afslutter med interaktionsdiagrammer.
+
+\subsection{Software Arkitektur} \label{Software Arkitektur}
+I dette projekt differentieres der to forskellige definitioner af Software Arkitektur. Det ene er UML's "4+1 Views" beskrevet i \cite{A&N} side 23. Dette definition forklare den organisatoriske struktur for et system der indeholder inddelinger i delkomponenter, deres forbindelse, interaktioner, mekanismer og giver et overblik over hele designen af systemet. Et diagram oversigt over denne definition er vist i figur \ref{UML2-SoftwareArkitektur} som er taget fra \cite{A&N} side 24.
+
+\begin{figure*}[ht]
+\centering
+	\includegraphics[width=15cm]{elaborationsdokumentet/figurer/design/soft-ark/UML2-SoftwareArkitektur.JPG}
+    \caption{UML Software Arkitectur diagram}
+    \label{UML2-SoftwareArkitektur}
+\end{figure*}
+
+Den anden definition er den praktiske inddeling af softwareren ind i subsystemer. Begge software løsninger der er produceret i gennem dette projekt er inddelt i et 3-lags program der inddeler presentation, domain og persistence i deres individuelle subsystemer. 
+
+I følgende delafsnit, er de enkelte dele af disse to definitioner nærmer beskrevet. I UP's og UML's Software arkitektur afsnit \ref{Softwarearkitektur} er beskrevet det 4+1 view. I afsnit \ref{Lagdeltarkitektur} Lagdelt arkitetur og  er beskrevet nærmer projektets opdeling i subsystemer.
+
+\subsubsection{UP's og UML's Softwarearkitektur} \label{Softwarearkitektur}
+De "4+1 view's" i Unified Process der bruger UML og vist i figure \ref{UML2-SoftwareArkitektur} fra \cite{A&N} side 24 er hver for sig et begrænset syn eller overblik (view) på et specific område af den samlede endelige Software løsningen. De 5 syn er Logical (logisk), Process (processen eller interaktionen), Impementation (implementationen), Deployment (udgivelse) og til sidst Use case (brugsmønstre) som forbinder de andre 4 syn med hinanden. 
+
+\paragraph{Logical view} om systemets problem domain og funktionalitet af løsningen i form af programklasser, objekter, pakker, opbygning af deres struktur og på "state machines". Focuset her er at vise hvordan systemets klasser og objekter er udviklet for at opfylde de nødvendige krav. Dette projekt indeholder ingen "state machine", så derfor er den ikke omhandlet nærmere.
+
+Systemklasserne og deres genererede objekter er beskrevet i fuld detaljer i afsnittet \ref{Designklasser} om den statiske designmodel.
+
+ 	 \includegraphics[width=5cm]{elaborationsdokumentet/figurer/design/soft-ark/UML2-LogicView.JPG}
+
+\paragraph{Process view} viser interaktioner mellem systemets interne klasser. Denne syn på software arkitekturen er baseret på "Logic view" med fokus på dens interaktion. Der refereres her til afsnittet om den statiske designmodel i \ref{Designklasser} hvor Systemklasserne og deres genererede objekter er beskrevet i fuld detaljer.
+ 	 
+     \includegraphics[width=5cm]{elaborationsdokumentet/figurer/design/soft-ark/UML2-ProcessView.JPG}
+
+\clearpage
+\paragraph{Implementation view} modelere de filer og komponenter som udegøre den physisk code for systemet. Denne viser også de afhængigheder mellem de enkelte dele og deres configuration. Dette syn er behandlet i Kapitel \ref{Implementering} Implementering.
+	\\
+ 	 \includegraphics[width=5cm]{elaborationsdokumentet/figurer/design/soft-ark/UMP2-ImplementationView.JPG}
+
+
+\paragraph{Deployment view} omhandler den konkrete procedure for udgivelsen af de fysiske dele der køre programmen. Et krav er at projektet er programmeret i Java. Dette gøre det nemt for udgivelsen, da Java køre som standart i en virtuelle maskine. Dette vil sige at den fysiske program kode kan køre på alle systemer der kan køre en Java virtuel maskine. Programmet forbinder til en Database der er skrevet i PostgreSQL og bruger JDBC (Java Database connector). Derfor er det vigtig for programmet at den database køre enten lokalt eller kan forbinde til en node (maskine) der køre denne database. Når programmet starter op kan lokalisation og autentifikation af databasen defineres og forbindes. Hvis forbindelsen lykkes bliver brugergrænsefladen udskiftet med Pageplaner, hvor hjemmesider kan blive oprettet, designet, ændret og slettet.
+
+Vigtigt er her at begge programmer, CMS'en og webshop, bruger den samme version af pakken guiWidgets, da de er afhængig af dette.
+ 	 \\
+     \includegraphics[width=5cm]{elaborationsdokumentet/figurer/design/soft-ark/UML2-DeploymentView.JPG}
+
+\paragraph{Use case view} beskriver kravene for systemet og er beskrevet fuldest i kapitel \ref{Krav} der omhandler alle dele af kravene og deres Brugsmønstre. Designet tager udgangspunkt i Brugsmønsterdiagrammer af figur \ref{UC-CMS} og \ref{UC-Webshop} Opdateret Brugsmønsterdiagram i kapitel \ref{Krav} Krav og har som fokus Brugsmønster Opdatere side i tabel \ref{Elab:UC-OpdatereSide} og Opret side i tabel \ref{Elab:UC-createPage}. 
+	\\
+ 	 \includegraphics[width=5cm]{elaborationsdokumentet/figurer/design/soft-ark/UML2-UsecaseView.JPG}
+
+\subsubsection{Lagdelt arkitektur} \label{Lagdeltarkitektur}
+Pakkediagram fra figur \ref{Pakkediagram-CMS} i Analyse afsnittet \ref{Pakkediagram} har ikke ændret sig. Pakkerne er inddelt i 3+1 subsystemer, som er 
+\begin{enumerate}
+\item Præsentation.
+\item Domain.
+\item Persistence.
+\item Mediators.
+\end{enumerate}
+De første 3 systemer er forbundet med en ekstra pakke med navnet mediators, der har som eneste formål med at give hver system et centreret interface der forbinder dem. Mediators delen er hverken en pakke eller et subsystem i sig selv men har en fysisk pakke og interface klasser der muliggøre kommunikation mellem alle lag. Derfor kan alle dele skiftes ud i senere udgivelsen, hvor der kun behøves at tage hensyn til Mediator pakken for at sikre at subsystemerne fungere med hinanden. 
+
+Præsentation har Pakkerne guiMain som håndtere det generelle brugergrænseflade, så som login og pageplanner delen og guiWidget  som indeholder alle Widgets som programmet har kendskab til. Begge programmer er afhængig af at denne pakke har samme version for begge programmer, da hver deres domænelag fungere forskelligt men bruger metoderne i guiWidgets. Her bliver det klart, hvorfor Præsentationslaget er inddelt i to forskellige pakker og systemet har en ekstra pakke for mediators. Pakken guiWidget kan deles mellem begge programmer med hver deres egen "guiMain"-pakken og når enten domain eller guiMain af det ene eller andet program skal videreudvikles eller udskiftes kan man nøjes med at kigge på Mediators metoder for at sikre at det stadig fungere med hinanden.
+
+\subsubsection{Arkitektoniske interaktion}
+\begin{center}
+  \begin{figure}[H]
+ 	 \includegraphics[height=16cm, width=12cm]{elaborationsdokumentet/figurer/design/soft-ark/Design-CMS-Arkitektonisk-Interaktionsdiagram-Simpel.png}
+     \caption{arkitekonsk Interaktionsdiagram viser et overblik over alle subsystemer og deres forbindelse.}
+     \label{AI-Overblik.}
+  \end{figure}
+\end{center}
+
+
+\subsection{Den statiske designmodel} \label{Statisk designmodel}
+Den statiske designmodel beskriver de enkelte dele af designet. Her findes fulde beskrivelser af klasserne et overblik over brugergrænsefladen og et første udkast af et udgivelsesdiagram.
+
+
+\subsubsection{Navigationsdiagram}
+
+Navigationen af brugergrænsefladen af begge programmer et simpel. Det første billede af programmet er en login scene til Database. Har kan lokalisationen og autentifikation af databasen ændres. Som standart er felterne allerede udfyldt med de standarte databaseinformationer. I denne scene er der to knapper. Login bruger de udfyldte data til at oprette en forbindelse til den ønskede database. Hvis forbindelsen var successfuld skriver scenen over til Pageplaner. Hvis forbindelsen fejlede vises der en "java alert" der giver vejledende beskrivelse til problemet. Hvis man ikke har nogen adgang til en passende database kan man bruge knappen "Use without Database". Denne knap er med rød tekst og giver en advarsel da denne funktion er kun til fremvisning af brugergrænsefladen, er eksperimentelt og giver mange interne fejl. Denne vej giver adgang til samme scene som login knappen men dens funktion er ikke garanteret.
+
+Brugergrænsefladen af Pageplaner er opdelt i 4 dele. til venstre ses et lyseblå og grå område der repræsentere det layout der kan redigeres. I toppen af den højre side indeholder 5 knapper der kan oprette, skifte eller slette et layout, acceptere eller afbryde handlingen. Den midterste del af højre side indeholder en liste over alle udviklede Widgets og kan per "drag and drop" placeres i layoutten på venstre side. Vej hjælp af højreklik kan de placerede widgets fjernes igen. Den nederste del er en pladsholder til finjustering af et markeret widget og dens instillinger.
+
+    \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/soft-ark/Navigationsdiagram-ElectroMOS.png}
+      \caption{Navigationsdiagram for ElectroMOS}
+      \label{Navigationsdiagram-ElectroMOS}
+  \end{figure}
+
+\subsubsection{Designklasser}\label{Designklasser}
+Som beskrevet i \cite{A&N} side 341 er designklasser beskrevet i denne sektion til dens fuldeste. Der er lavet klasser i forhold til at de har hver deres domæne at tage sig af, har en høj sammenhørlighed og en lav kobling. Den lave kobling realiseres primært ved hjælp af "mediators" pakken der indeholder abstrakte klasser og interfaces der koordinere kommunikationen mellem klasserne.
+
+
+CMS systemet indeholder en god mængde logik på præsentationslaget i forhold til visningen af diverse Widgets, mens forretningslaget sørger primært for opbevaring af repræsentationerne af disse. Årsagen er primært, at dette er en CMS system, hvis pointen er at designe en hjemmeside. Domænen er i dette projekt er et visuelt problem der løses.
+Dette gør dog, at der ikke er meget at vise i forhold til selve domænelag. Figuren, \ref{fig:domainDiagram} viser sammenhængen på præsentationslaget.
+På diagrammet er der en klasse, der hedder "Launcher", og den har til formål at skifte mellem forskellige Scener. Denne klasse er klassen, der indeholder main-metoden. De forskellige sceners URL bliver gemt i Scenes, som er en enumerator. Ved skift af scene vil en enum-konstant blive taget som argument, hvilket er med til at forebygge fejl, da der ikke behøves at huske URL'en til diverse .fxml-layouts. 
+
+Klassen LoginToDatabase og Pageplanner arver begge fra Controller-klassen, som er skabt til det formål, at generalisere alle Controllers, så de kan gemmes i Launcher under run-time. Både LoginToDatabase og Pageplanner har kontakt med mediatoren fra forretningslaget. LoginToDatabase, som navnet antyder, sørger for at oprette en forbindelse, hvorefter den videregiver referencen til Pageplanner, som sørger for redigering af forskellige sider.
+
+Forskellige Widgets som søgebarer og produktinformation findes i pakken guiWidgets, hvor de bliver hentet fra klassen, WidgetSelector. Forklaring omkring klassen, Widget, findes i dybere detaljer i implementeringsdelen. Figur \ref{fig:domainDiagram} viser i større detaljer sammenhængen i dette lag.
+    \begin{figure}[H]
+      \includegraphics[width=26cm]{elaborationsdokumentet/figurer/design/DomainDiagram.png}
+      \caption{Domain diagram viser alle klasser og deres forbindelser.}
+      \label{fig:domainDiagram}
+  \end{figure}
+
+\FloatBarrier
+\twocolumn
+
+\subsubsection{Designklasser for domænelag}
+
+BusinessController er klassen der håndtere de forskellige layouts og deres widgets. Denne klasse tilføjer og fjerner Widgets og håndtere repræsentationer af Widgets. 
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-BusinessController.png}
+      \caption{Designklasse af BusinessController i pakken business har til formål at starte programmet og håndtere skift mellem scener.}
+      \label{Designklasse-BusinessController}
+  \end{figure}
+  
+WidgetHandler forbinder klassen Widget og WidgetRepresentation i gennem en hashmap.
+        \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-WidgetSelector.png}
+      \caption{Designklasse af WidgetHandler i pakken "business" har til formål at starte programmet og håndtere skift mellem scener.}
+      \label{Designklasse-WidgetHandler}
+  \end{figure}
+  
+WidgetRepresentation holder informationer på Widgets positioner og størrelser der er relevant for layouttet. I den næste iteration vil det dermed være mulighed for at redigere Widgets størrelse de kan fylde på hjemmesiden.
+
+          \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-WidgetRepresentation.png}
+      \caption{Designklasse af WidgedRepresentration i pakken "business" har til formål at starte programmet og håndtere skift mellem scener.}
+      \label{Designklasse-WidgedRepresentration}
+  \end{figure}
+
+\subsubsection{Designklasser for subsystemer}
+Subsystemer for ElectroMOS er Præsentationslag der indeholder pakkerne guiMain og guiWidget, Persistence 
+og mediators.
+
+
+\FloatBarrier
+\paragraph{Brugergranseflade}
+
+\paragraph{guiMain}
+Denne pakke står for at håndtere brugergrænsefladen og skift af scener. Pageplaner klassen her bruger sig af guiWidget pakken for at placere widgets.
+
+Launcher er den der starter hele programmet op og håndtere skift af scenerne.
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-Launcher.png}
+      \caption{Designklasse af Launcher i pakken "guiMain" har til formål at starte programmet og håndtere skift mellem scener.}
+      \label{Designklasse-Launcher}
+  \end{figure}
+  
+Controller klassen er en abstrakt klasse der står som grundelement for de andre scener. En JavaFX projekt der bruger FXML filer skal bruge en controller. Derfor arver de andre scene denne controller. 
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-Controller.png}
+      \caption{Designklasse af Controller i pakken guiMain er en abstrakt klasse der hjælper Launcher med skift af scener.}
+      \label{Designklasse-Controller}
+  \end{figure}
+
+Scenes er en enumeration klasse der holder informationer for de forskellige scener. Den indeholder også en methode der giver et specific navn på den scene der er i bruge i øjeblikket. Det bliver brugt i Launcher for at sæt Stage-titlen.
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-Scenes.png}
+      \caption{Designklassen af Scenes i pakken guiMain er en enumeration der indeholder informationer af de forskellige scener af programmet.}
+      \label{Designklasse-Scenes}
+  \end{figure}
+
+Pageplanner er controller klassen der håndtere det primære brugergrænseflade for scenen af pageplanner.
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-Pageplanner.png}
+      \caption{Designklassen-Pageplanner i pakken guiMain er controlerklassen for scenen til håntering af ændringer for Layouts.}
+      \label{Designklasse-Pageplanner}
+  \end{figure}
+
+LoginToDatabase er controller klassen der håntere scenen for at logge ind i databasen. 
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-LoginToDatabase.png}
+      \caption{Designklassen af LoginToDatabase i pakken guiMain der er controllerklassen for scenen der håndteres brugergransefladen til forbindelse af Databasen.}
+      \label{Designklasse-LoginToDatabase}
+  \end{figure}
+  
+LayoutSelector er en klasse der hjælper pageplaner at håndtere de forskellige Layouts. Dette er via et popup vindue der muliggøre at vælge en Layout.
+    \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-LayoutSelector.png}
+      \caption{Designklassen af LayoutSelector i pakken "guiMain" der håndtere hvilken layout Pageplaner redigere.}
+      \label{Designklasse-LayoutSelector}
+\end{figure}
+      
+DialogCreateLayout er en modifikation af klassen Dialog.
+\begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-DialogCreateLayout.png}
+      \caption{Designklassen af DialogCreateLayout extender Javas egen klasse Dialog og giver tilpasset dialoger "popups".}
+      \label{Designklasse-DialogCreateLayout}
+  \end{figure}
+  
+\paragraph{guiWidget}er en pakke i subsystemet for præsentation som deles af begge programmer og indeholder klasser der omhandler Widgets. Widgets er elementer af hjemmesiden der udføre en bestemt funktion. Figur \ref{Designklasse-Widget} på side \pageref{Designklasse-Widget} viser designklassen for Widget, som er grundlaget for de forskellige typer af elementer der kan placeres på en layout.
+
+Widget er den klasse der indeholder de relevante informationer af de forskellige widgets. Widgets og deres specifikke funkioner kunne være Product, Searchbar, browser. Disse er blev skubbet til næste iteration af projektet.
+\begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-Widget.png}
+      \caption{Designklassen for Widget i pakken "guiWidget" er grundlaget for elementer på et layout.}
+      \label{Designklasse-Widget}
+  \end{figure}
+
+WidgetSelector samler de generede widgetobjekter ind i en ArrayList og tilbyder metoder til håndtering af dette.
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-WidgetSelector.png}
+      \caption{Designklassen for WidgetSelector i pakken guiWidget håndtere alle Widget Objekter af et layout.}
+      \label{Designklasse-WidgetSelector}
+  \end{figure}
+
+\FloatBarrier
+
+\paragraph{Mediator pakken}
+
+DatabaseMediator giver alle kald videre til Databasen.
+
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-DatabaseMediator.png}
+      \caption{Designklassen for DatabaseMediator i pakken mediators håndtere alle Widget Objekter af et layout.}
+      \label{Designklasse-DatabaseMediator}
+  \end{figure}
+  
+BusinessMediator giver et interface til Domænelag.
+  
+\begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-BusinessMediator.png}
+      \caption{Designklassen for BusinessMediator i pakken mediators håndtere alle Widgetobjekter af et layout.}
+      \label{Designklasse-BusinessMediator}
+  \end{figure}
+
+\paragraph{Persistence}
+
+DBMediator sørge for at der ikke er flere mediator objekter end nødvendig.
+      \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-DBMediator.png}
+      \caption{Designklassen for DBMediator i pakken persistence håndtere alle Widget Objekter af et layout.}
+      \label{Designklasse-DBMediator}
+  \end{figure}
+  
+ConnectionToDB håntere kommunicationen til og fra Databasen.
+        \begin{figure}[H]
+      \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-ConnectionToDB.png}
+      \caption{Designklassen for ConnectionToDB i pakken "persistence" håndtere alle Widgetobjekter af et layout.}
+      \label{Designklasse-ConnectionToDB}
+  \end{figure}
+  
+Logic indeholder SQL koder der er brugt til at håndtere opgaverne til og fra Databasen og bliver sendt videre til ConnectionToDB klassen.
+          \begin{figure}[H]  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/design/designklasser/Designklasse-Logic.png}
+      \caption{Designklassen for Logic i pakken "persistence" håndtere alle Widgetobjekter af et layout.}
+      \label{Designklasse-Logic}
+  \end{figure}
+
+\FloatBarrier
+\onecolumn
+
+
+
+\subsection{Den dynamiske designmodel} \label{Dynamisk designmodel}
+
+
+\subsubsection{Sekvensdiagrammer}
+
+Sekvensdiagrammet for at opret en side har ikke ændret sig siden Analyseafsnittet.
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/analyse/sekvensdiagram_for_CMS.png}
+      \caption{Sekvensdiagram for at Opret en nye side.}
+      \label{Des:Sekvensdiagram-CMS-OpretSide}
+  \end{figure}
+
+
+          \begin{figure}[H]
+          \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/analyse/Update_Webpage.png}
+      \caption{Sekvensdiagram for at opdatere en nye side.}
+      \label{Des:Sekvensdiagram-CMS-OpdatereSide}
+  \end{figure}
+
+
+
+
+\FloatBarrier
+
+
+
+\section{Designmodellen af Webshop}
+Ud fra de diagrammer der blev udviklet i analyse, kan man nu danne en bedre forståelse for hvordan webshoppens design skal opbygges. Der startes med at tage udgangspunkt i sekvensdiagrammet load page og klassediagrammet fra webshoppen. I gennem sekvensdiagrammet er der blevet identificeret metoder der nu skal tilføjes til klassediagrammet. I sekvensdiagrammet udviklet i analyse, blev der identificeret hvilket metoder der skulle bruges til at opbygge de brugsmønster realiseringer der er blevet udviklet. På den måde identificeres alle metoderne ud fra brugsmønster modellen, så programmet opfylder alt funktionalitet som Electroshoppen ønsker. Da webshoppen kun har identificeret et brugsmønster i samarbejde med CMS systemet, har det indtil videre kun et formål. Dette formål er at loade en valgt side fra databasen. 
+Som udgangspunkt skal et metodekald fra GUIlaget til Businesslaget sætte hele processen i gang. Hvilket betyder at kunden starter med at lave et kald til denne metode, hvorefter hele den ønskede side bliver vist. 
+ 
+De udviklede klasser skal også placeres i de relevante pakker, så alt der er Database relateret bliver placeret i "persistence" pakken. Alt der laver udregninger, og håndtere det data fra databasen, bliver placeret i businesspakken. Alle Mediators og de to interfaces placeres i samme pakke, så fremtidige udvikling er nemmere at overskue, da man primært kun skal have overblik over mediator pakken. Og GUIlaget er primært javaFX filer der bliver manipuleret baseret på data gemt i businesslaget. 
+Diagrammet på næste side viser det endelige resultat efter implementationen af de to diagrammer.
+
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth ,height=21cm]{elaborationsdokumentet/figurer/analyse/UMLdel2.png}
+  \caption{Design Model af Webshop}
+  \label{fig:Design Model af Webshop del 1}
+\end{figure}
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth ,height=8cm]{elaborationsdokumentet/figurer/analyse/UMLdel1.png}
+  \caption{Design Model af Webshop}
+  \label{fig:Design Model af Webshop del 2}
+\end{figure}
+
+\FloatBarrier
+
+Der er blevet medtaget arv, baseret på at alle mediators der bliver lavet skal arve fra mediator pakken, da den indeholder kritisk metodenavne og returneringsværdier, for at webshoppen kan blive lavet. Derudover, skal alle klasser, som en mediator skal snakke med, importerer fra interfacet Colleague. På den måde er det sikret at de rigtige metoder bliver implementeret, hvis en logik eller mediator bliver udskiftet. Der er mulighed for videre implementering i begge interface, når der kommer mere kompleksitet på webshoppen. Alt information omkring mediators brugt findes på: \cite{mediator}
+ 
+Access modifier er blevet opsat baseret på at kun logic filer skal kunne tale til mediator pakken. Og så  sørger mediator pakken for at data, kommer det rigtige sted hen. Men dette betyder både colleague og mediator filer primært skal være public for at kunne snakke med hinanden. Udover disse Klasser er de resterende metoder og klasser ment til som minimum at være package private, for at undgå at lagene ikke kan kommunikere uden at skulle igennem mediator først.
+
+\section{Opsummering}
+I  denne Kapitel  er der gennemgået de designbeslutninger af både CMS og Webshop programmen af projektet.  Webshoppen deler mange elementer med hovedprogrammet CMS og er derfor beskrevet i mindre detaljer. Navigationen af Brugergrænsefladen er i begge tilfælde meget simpel, hvor der er lidt flere funktioner og muligheder i CMS programmet. Den lagdelte struktur som beskrevet i Unified proces  er opdelt i de forskellige views der hver tag deres "syn" på programmen og bliver samlet af brugsmønstrene beskrevet i  Kapitel \ref{Krav} om Krav. Desuden er der gået i detalijer om lagindeling af programmet i Præsentation, Domæne og Persistence som bliver forbundet sammen via en ekstra pakke med navnet mediators. Sekvensdiagrammerne har ikke ændret sig siden Analysen af projektet.

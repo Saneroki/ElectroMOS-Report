@@ -1,0 +1,36 @@
+
+Electroshoppen er en virksomhed, med 40 butikker lokaliseret over hele landet, de har stillet til opgave at udbygge en webshop, som kan hjælpe med at øge deres omsætning. De håber på at deres total omsætning stiger med 25\%. 15\% af denne stigning stammer fra webshoppen, og de sidste 10\% stammer fra deres butik. 
+
+Problemstillingen er at få designet en webshop der kan skaffe flere kunder, både kunder der handler online, men også kunder der ønsker at se produktet, før kunden køber produktet i butikken. Webshoppen skal give butikken mulighed for at afskaffe deres fjernlager, ved at produktet bliver bestilt direkte fra deres mellemleverandører når ordren bliver lagt af kunden. Siden skal have rig mulighed for at Electroshoppen kan tilpasse deres webshop alt efter hvad behov de har, uden at skulle igennem en webudvikler først.
+
+Electroshoppen har givet et ønske om strukturen på deres webshop, og har opstillet denne model der giver et overblik over hvilket komponenter der skal bruges til at udvikle shoppen.
+
+\begin{figure*}
+  \includegraphics[width=10cm]{inceptionsdokumentet/figurer/Electroshoppens-Systemlandskab.png}
+  \caption{Electroshoppens systemlandskab}
+  \label{fig:ElectroshoppensSystemlandskab}
+\end{figure*}
+
+\section{Produkt overblik}
+Electroshoppens webshop indhold skal kunne styres af medarbejderne, uden hjælp fra eksterne webudviklere. Det betyder at der skal udvikles et content management system, der skal kunne styre indholdet på deres hjemmeside, uden at der skal skrives ekstra kode. Dette kræver et system, med et brugervenligt interface, som kun kan tilgås af de rigtige medarbejdere fra Electroshoppen, og som kan opdateres uden for meget besvær.
+
+\section{Mål}
+Målet ved udviklingen af content management systemet for Electroshoppen, er at give medarbejderne nem adgang til at kunne holde deres webshop ved lige, uden at skulle kontakte webudviklere først. De skal kunne ændre på shoppens struktur og indhold, uden at skulle skrive 
+
+en linje kode. Det betyder at der skal være et brugervenligt interface, der giver Electroshoppen en nem og overskuelig mulighed for at ændre på indhold. 
+
+Når der er kampagner, tilbud osv. skal Electroshoppen have mulighed for at fremhæve disse events. Således har Electroshoppens kunder altid hurtig adgang til de gode tilbud, hvilket medfører en højere omsætning, og derved kommer Electroshoppen tættere på det ønskede mål om at nå 25\% forhøjet indtjening. Webshoppens CMS skal kun tilgås af de rigtige medarbejdere. 
+
+Altså skal der være et log-ind system, til at styre hvem der har hvilke rettigheder. Målet er at give Electroshoppen meget kontrol over deres egen portal, uden at kompromittere strukturen af webshoppen. Dette giver Electroshoppen mulighed for at kunne vise deres kunder det de ønsker, og dermed have flere tilfredse kunder, der ved hvor de skal gå hen for at få deres elektroniske behov opfyldt.
+
+\section{Produkt beskrivelse}
+Content Management System eller CMS, er et system, der giver folk uden kendskab inden for HTML, programmering mm. en nem mulighed for at lave, redigere og vedligeholde indhold på deres egen hjemmeside. I Electroshoppens interface betyder det, at det skal være let tilgængeligt for at redigere siden, når de gerne vil have specielle tilbud/kampagner kørende på deres webshop. Electroshoppens medarbejder  skal kunne fjerne segmenter de er utilfredse med, og give plads til mere relevante elementer. Derudover skal medaarbejderne kunne styre hvilken information bliver vist til den individuelle kunde, således at det der bliver vist matcher kundens tidligere køb og eventuelle forslag til andet der kan have kundens interesse.
+
+CMS skal have nem adgang til kunde- og trafikdata, og skal kunne tilgås af de rigtige personer, uden at være bekymret for at denne information falder i de forkerte hænder. Dette betyder at siden skal have et log-ind system, der giver webshoppens redigerings ansvarlige tilladelse til at kunne flytte på de elementer der nu skal flyttes på.
+
+Når man kigger på andre populære CMS, som Wordpress og Joomla, er der mulighed for at ændre struktur og indhold. Derudover kan man tjekke information omkring sider, såsom antal besøgende på diverse sider. Vores mål er at danne et produkt, der tager de bedste egenskaber fra disse separate systemer, men stadig er unikt specificeret til hvad kunden har behov for. Det betyder at ikke alt struktur/indhold på webshoppen skal kunne ændres. Nogle statiske aspekter skal være til stede, og skal som udgangspunkt ikke kunne ændres på.
+
+\section{Opsummering}
+Det overordnet vision for EletroMOS er at lave et CMS der opfylder de behov, der kan være for at holde webshoppen ved lige, den skal være brugervenlig og give fuld kontrol over strukturen. Dette betyder at der ikke skal være en forståelse for kode, for at kunne holde webshoppen up to date. 
+
+Ligeledes er det nødvendigt med et log-in system til autorisation, idet CMS har adgang til følsomme data. Ved log-in kan kun de tilladte medarbejdere benytte ElectroMOS.

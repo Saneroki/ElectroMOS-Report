@@ -1,0 +1,38 @@
+% 7.   	Test
+% Indledning
+% Konklusion på testen
+% (I forklaringen af testen forventes teorien anvendt)
+
+\section{Indledning}
+Testing af CMS bliver gjort primært med JUnit. JUnit er et Open Source Testing framework til Java. I dette projekt er det blevet brugt til at teste, om systemet overholder kravene, som er tidligere specificerede.
+Derfor vil dette afsnit primært omhandle hvordan de fire brugsmønstre tidligere specificeret er blevet testet. Netbeans kan automatisk generere disse tests, og det er sådan det begyndte. Testene foregår på forretningslaget, da det er dér, hvor den primære logik foregår. Da dette er et system, der ikke laver vildt mange deciderede forudsigelige operationer, er der foregået meget manuel testing. 
+\section{Fremgangsmåden}
+Til at begynde med, sørgedes der for at testeklassen er sat op, som den ville være i run-time. Dette sørger for, at der faktisk er en forbindelse til databasen. Dette bliver præsenteret i figuren blot neden under, figur \ref{fig:test-01}. Ved at bruge opstartsmetoden sørgedes der for, at nye duplikater ikke bliver instantieret.
+
+\begin{figure}[ht]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/test/test1.png}
+  \caption{Representation af database opsætning}
+  \label{fig:test-01}
+\end{figure}
+\FloatBarrier
+
+Derefter kunne blev 3 metoder udvalgt af de mange genererede, da disse dækker de 4 brugsmønstre, og de andre primært er hjælpe-metoder benyttet af de 3.
+For at demonstrere hvordan disse er blevet testet, vises selve load funktionen lige under. Figur \ref{fig:test-02}
+
+
+\begin{figure}[ht]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/test/test2.png}
+  \caption{Representation af database opsætning}
+  \label{fig:test-02}
+\end{figure}
+\FloatBarrier
+
+Da dette ikke er noget, der kan forudsiges med tal, er der krav for, at der findes en måde at teste, at resultatet er det ønskede.  I forsøget på at teste loadWidgetRepresentation, var der behov for at ændre metodens krop således, at der kunne opnås input. I denne test testes der for, om det rigtige antal widgets bliver hentet fra databasen. Derfor er tabellen fra databasen inkluderet i illustrationen. Dermed kan der ses, at site\_id 4 har 10 widgets til stede. Således er den forventede værdi 10, da der tjekkes på antallet af widgets. Dette viser også, at hvis siden ikke eksisterer, vil antallet af widgets være 0, men da dette er en metode, der bliver brugt efter at siden er identificeret. Den er tidligere identificeret via. Choiceboxes.
+
+%\section{Konklusion}
+\section{Opsummering}
+Samme fremgangsmåde er blevet brugt til at teste de andre metoder implementeret. Disse opnåede det ønskede resultat. Enhedstestning opdeles samtidig i to kategorier, manuel testning og automatisk testning, hvor der som nævnt tidligere er blevet brugt manuel testning til dette system. Siden at der er brugt manuel testning, er der også langt større risici for fejl. Dette er, da automatisk testning er langt hurtigere, og mere pålidelig. Manuel testning kræver mange menneskelige resurser, samtidig med, at det er en kedelig proces. Dermed kan det konkluderes, at testningen i dette system har været med til at identificere ukendte fejl, men dog samtidig med risiko for, at der er flere oversete, pga. manglen på automatisk testning.
+
+
+%\section{Overvejelser, beslutninger og resultater}
+

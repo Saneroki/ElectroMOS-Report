@@ -1,0 +1,334 @@
+
+Det følgende afsnit handler om de krav der bliver stillet for ElectroMOS. Det bliver vist i form af en brugsmønster, klassediagram og specifikke krav. I afsnit om krav er der gået mere i dybden i hvordan ElectroMOS skal bygges op. 
+
+\section{Brugsmønstermodel}
+Generelt er det nogle ret overfladiske beskrivelser, da ændringer uden tvivl vil forekomme. Dette forebygger således spildt arbejde. Disse bliver generelt mest brugt til at identificere funktionelle krav, da ikke-funktionelle krav ikke kan defineres vha. disse.
+
+Diagrammet er til et generelt overblik, mens beskrivelserne er mere dækkende.
+Hvis vi kigger på figur \ref{fig:Usecasediagram-CMS}. Kan vi se hvordan vi har 2 primærer aktører til CMS, dette er indholds administrator, det primært er aktøren der bruger CMS’en til at redigere indholdet på webshoppen.
+
+\begin{figure*}
+  \includegraphics[width=\linewidth]{inceptionsdokumentet/figurer/Usecasediagram-CMS.png}
+  \caption{Brugsmønsterdiagram. Her vises et diagram på højt abstraktionsniveau, hvordan de forskellige aktører kan kommunikere med systemet.}
+  \label{fig:Usecasediagram-CMS}
+\end{figure*}
+
+\paragraph{Eksempel på detaljeret brugsmønster beskrivelse}
+Nedenunder ses en mere detaljeret brugsmønster beskrivelse for CMS’et på ændring kan foregå på en side. Siden er selvfølgelig skrevet i et højt abstraktionsniveau, så de analytiske- og designrelaterede aspekter er næsten ikke-eksisterende.
+
+
+\begin{table}[t]
+\centering
+    \begin{tabular}{|p{5cm}|p{10cm}|}
+        \hline
+        Brugsmønster: & Opdatér side \\ 
+        \hline
+        ID: & b101 \\ 
+        \hline
+        Kort beskrivelse: & Giver indholdsadministratorer mulighed for at redigere, opdatere eller slette en side. \\ 
+        \hline
+        Primære aktører: & Indholdsadministrator. \\ 
+        \hline
+        Sekundære aktører: & CMS database \\ 
+        \hline
+        Prækonditioner: & Aktøren er logget ind via. brugsmønstret: Login (ID: b102) \\ 
+        \hline
+        Main flow: & 
+        \begin{minipage}{10cm}
+        	\begin{enumerate}
+                \item Aktør gå ind under Brugervisning i CMS
+                \item Aktør opretter en administratorprofil ved at trykke på knappen “opret Administrator”
+                \item Aktør indtaster oplysninger om profilen, såsom navn på profilen og adgangskode.
+                \item Aktør vælger hvilke rettigheder profilen skal have i CMS’en.
+                \item Aktør bekræfter profilen ved at indtaste adgangskoden for bekræftelse.
+        	\end{enumerate}
+        \end{minipage} \par \\
+
+        \hline
+        Postkonditioner: &  
+        \begin{minipage}{10cm}
+        	\begin{enumerate}
+                \item Siden er gemt i databasen.
+                \item Webshoppen skal kunne formes efter data fra databasen.
+                \item Opdateringer ændres næste gang hjemme siden loades.
+        	\end{enumerate}
+        \end{minipage} \par \\
+        \hline
+        \begin{minipage}{3cm} Alternative \\ hændelsesforløb:
+        \end{minipage}
+        & - \\ 
+        \hline
+    \end{tabular}
+    \caption{Brugsmønsterdiagram - Opret Widget}
+    \label{UC-Opret Widget}
+\end{table}
+
+\begin{table}[t]
+\centering
+    \begin{tabular}{|p{5cm}|p{10cm}|}
+        \hline
+        Brugsmønster: & Opret Widget \\ 
+
+        \hline
+        ID: & b102 \\ 
+
+        \hline
+        Kort beskrivelse: & Giver indholdsadministratorer mulighed for at redigere, opdatere eller slette en side. \\ 
+        \hline
+        Primære aktører: & Indholdsadministrator. \\ 
+        \hline
+        Sekundære aktører: & CMS database \\ 
+        \hline
+        Prækonditioner: & 
+        \begin{minipage}{10cm}
+        	\begin{enumerate}
+        	\item Adgang til CMS databasen.
+            \item Aktøren er logget ind via. brugsmønstret: Login (ID: b102) 
+        	\end{enumerate}
+        \end{minipage} \par \\ 
+        \hline
+        Main flow: &  
+        \begin{minipage}{10cm}
+        	\begin{enumerate}
+        	\item Opret ny widget.
+            \item Definer widget navn og id.
+            \item Definere widget struktur
+              \begin{enumerate}
+                \item Hvis widget er custom brug programming
+                \item Lav widget fra eksisterende widgets.
+              \end{enumerate}
+            \item Review widget.
+            \item Tjek om widget overskrider krav til widget.
+            \item Godkend widget.
+        	\end{enumerate}
+        \end{minipage} \par \\ 
+        \hline
+        Postkonditioner: & 
+        \begin{minipage}{10cm}
+        	Widget er gemt i CMS database. \\
+        	CMS kan tilgå alle widgets
+        \end{minipage} \\
+        \hline
+        \begin{minipage}{10cm} Alternative \\ hændelsesforløb:
+        \end{minipage}
+        & - \\ 
+        \hline
+    \end{tabular}
+    \caption{Brugsmønsterdiagram - Opret Widget}
+    \label{UC-OpretWidget}
+\end{table}
+
+\begin{table*}[t]
+    \begin{tabular}{|p{3cm}|p{14cm}|}
+        \hline
+        Brugsmønster: & Profil Administering \\ 
+
+        \hline
+        ID: & b103 \\ 
+
+        \hline
+        Kort beskrivelse: & Processen for at Administrator kan gå ind og oprette, ændre eller slette brugere/underadminstratore på CMS. \\ 
+        \hline
+        Primære aktører: & Systemadministrator. \\ 
+        \hline
+        Sekundære aktører: &  \\ 
+        \hline
+        Prækonditioner: & Aktør er logget ind som administrator på CMS. \\ 
+        \hline
+        Main flow: &  
+        \begin{minipage}{14cm}
+        	\begin{enumerate}
+        	\item Aktør gå ind under Brugervisning i CMS
+            \item Aktør opretter en administratorprofil ved at trykke på knappen “opret Administrator”
+            \item Aktør indtaster oplysninger om profilen, såsom navn på profilen og adgangskode.
+            \item Aktør vælger hvilke rettigheder profilen skal have i CMS’en.
+            \item Aktør bekræfter profilen ved at indtaste adgangskoden for bekræftelse.
+        	\end{enumerate}
+        \end{minipage} \par \\ 
+        \hline
+        Postkonditioner: & Der er oprettet en administratorprofil, der er ændret en administratorprofil, eller der er blevet slettet en administratorprofil. \\
+        \hline
+        \begin{minipage}{3cm} Alternative \\ hændelsesforløb:
+        \end{minipage}
+        & \begin{minipage}{14cm}
+        	For ændringer af administratorprofil:
+        	\begin{enumerate}
+              \item Aktør gå ind under Brugervisning i CMS
+              \item Aktør vælger en Administratorprofil, og går ind under siden for profilinformationer.
+              \item Aktør ændre de informationer for profillen som Aktøren ønsker ændret.
+              \item Aktør bekræfter ændringer ved at indtaste adgangskode for bekræftelse.
+        	\end{enumerate}
+            For sletning af administratorprofil:
+            \begin{enumerate}
+            \item Aktør gå ind under Brugervisning i CMS
+            \item Aktør vælger den ønskede profil og går ind under siden for profilinformationer.
+            \item Aktør trykker på knappen “slet bruger”.
+            \item Aktør bekræfter ændringer ved at indtaste adgangskode for bekræftelse.
+            \end{enumerate}
+        \end{minipage} \\ 
+        \hline
+    \end{tabular}
+    \caption{Brugsmønsterdiagram - Profil Administrering}
+    \label{UC-ProfilAdministrering}
+\end{table*}
+
+\FloatBarrier
+
+\section{Klasse Diagram}
+Her henvises til et mere detaljeret diagrammet vedhæftet i bilaget. som udgangspunkt er strukturen over systemet på plads. Dog mangler der en mere detaljeret beskrivelse af de enkelte klasser. Specielt er der snakket om widgets, der giver mening at arbejde på en efter en. Det betyder at som vi skrider frem med udviklingen af disse widgets, giver det os bedre mulighed for at identificere hvilket attributter og metoder der skal bruges.
+ 
+På figur 3 kan vi se hvordan det overordnet struktur af systemet skal være. her vises der hvordan gui snakker sammen med databasen igennem vores EletroMOS cms. Webshoppen henter så det gemte data fra database, og sætter sine mål efter hvad databasen siger.
+ 
+Figur 4. Viser domain modellen over ElectroMOS, den viser hvilket relationer de forskellige klasser har til hinanden, hvordan systemet kommunikere, og hvilket attributter der er blevet identificeret.
+
+\begin{figure}[ht]
+	\includegraphics[width=10cm]{inceptionsdokumentet/figurer/Inception-Pakkediagram.JPG}
+    \caption{Package diagram over hvilket pakker vi ville have i vores program}
+    \label{Inception Pakkediagram}
+\end{figure}
+
+\begin{figure}[ht]
+	\includegraphics[angle=270, width=\linewidth]{inceptionsdokumentet/figurer/Inception-Domainmodel.JPG}
+    \caption{Domain modellen, med et overblik over hvilke klasser der skal tilføjes til systemet.}
+    \label{Inception Domainmodel}
+\end{figure}
+
+\FloatBarrier
+
+\section{Funktionelle krav}
+Når der snakkes om funktionelle krav, snakkes der om krav, der omhandler, hvad man ønsker et system bør gøre. Her er der ikke interesse i, hvordan denne funktion bliver udført, men at den bliver udført, og selvfølgelig efter hensigten. Hvis der på en eller anden måde ønskes, at systemet skal kunne køres på en Amiga 500, tales der om en ikke-funktionel krav. Dette kan læses nærmere længere nede.
+
+\paragraph{User Interface}
+\begin{enumerate}
+\item Administrator skal være i stand til at ændre sidens layout uden brug af kode. Det skal kunne gøres ved hjælp af skabeloner.
+\item Administrator kan styre hvilke moduler der er placeret hvor, på layout.
+\item Administrator skal kunne sætte maks og minimumstørrelser for moduler.
+\item Administrator kan administrere sider(page) på webshoppen.
+	\begin{enumerate}
+	\item En side kan laves fra bunden op, også kaldet en custom side. Kræver kendskab til kodning
+    \item En side kan også bruge pre-fabrikerede skabeloner, til at strukturere sidens opbygning.
+    \item Skabelonerne skal kunne redigeres efter behov.
+    \item Administrator skal kunne gemme ændrede skabeloner og sider bygget op fra bunden til brug som skabeloner senere hen.
+    \item Administrator skal kunne være i stand til at ændre/slette allerede eksisterende sider.
+    \item Administrator skal kunne lave nye artikler
+    	\begin{enumerate}
+    	\item En artikel skal kunne skrives i fritekst og kan indeholde formateringer af teksten.
+        \item Administrator skal også være i stand til at indsætte billeder, multimedier, figurer og links ind i teksten til artiklen.
+    	\end{enumerate}
+    \item Administrator skal være i stand til at ændre/slette eksisterende artikler
+	\end{enumerate}
+\end{enumerate}
+
+\paragraph{Brugerhåndtering}
+	\begin{enumerate}
+	\item CMS skal samle oplysninger omkring hjemmesiden, system administrator skal have adgang til denne data.
+    \item Denne data inkluderer
+    \begin{enumerate}
+    \item Bruger information
+    \item Hjemmeside trafik
+    \item Købshistorik
+    \item Produkter kunden muligvis kunne være interessert i.
+    \end{enumerate}
+    \item Administrator skal være i stand til at slette eller ændre brugeres oplysninger.
+	\end{enumerate}
+
+\paragraph{Login}
+	\begin{enumerate}
+	\item Administrator skal kunne logge ind på systemet, med alle administrator rettigheder tildelt til ham/hende.
+    \item Indholdsadministrator skal også kunne logge ind, men ikke med lige så mange rettigheder.
+	\end{enumerate}
+    
+\paragraph{Settings}
+	\begin{enumerate}
+	\item Administrator skal være i stand til at styre systemet og alle indstillinger på systemet.
+    \item Administrator skal kunne slukke og tænde for systemet og dele af systemet.
+	\end{enumerate}
+
+\paragraph{Preferencer}
+	\begin{enumerate}
+	\item Admin skal kunne vælge imellem valutaer til visning af priserne.
+	\end{enumerate}
+    
+\section{Ikke funktionelle Krav}
+Her er beskrevet de ikke-funktionelle krav for systemet. I modsætningen til funktionelle krav, så er ikke-funktionelle krav nærmere kvaliteten og begrænsningen af hvad systemet gør.
+
+\paragraph{Functionality}
+	\begin{enumerate}
+	\item Det skal ikke være muligt for udefrakommende at udnytte fejl i systemet der sørger for at de får vare tilsendt uden at systemet er sikker på at betalingsprocessen er blevet gennemført.
+    \item Fault tolerance: Et IP-adresse skal blokeres, hvis dette ip ligger stress på servers, at performance bliver reduceret til et punkt hvor sidens responstid er nedsat.
+    \item IP blokeres hvis login processen fejler mere end 10 gange.
+    \item CMS skal kun kunne tilgåes af medlemmer med the relevante brugerrettighed.
+    \item Robustness: Systemet skal kunne modstå angreb som DDOS og Slow loris.
+    \item Systemet skal sanitize alle manuelle bruger input, for at forebygge sql injection.
+    \item Stability: Systemet skal være stabilt selv under hackerangreb og være i stand til at undgå finansielle omkostninger.
+	\end{enumerate}
+    
+\paragraph{Usability}
+	\begin{enumerate}
+	\item Emotionelle faktorer: Oprettelse og ændringer af sider skal føles overraskende nemt.
+    \item Accessibility: Brugeroverfladen skal være nemt læselig, overskuelig og forståeligt.
+    \item Dependency: Systemet skal kunne arbejde godt sammen med Webshoppen, Produktinformations Management og Digital Asset Management, både for at bruge deres service men også for at servicere dem.
+    \item Deployment: Systemet skal være nemt at adoptere, det kræver ikke mere end 10 timer undervisning i systemet for at kunne udnytte det fuldt ud.
+    \item Platform compatibility: Systemet skal kunne køre på alle moderne platforme.
+    \item Reusability: Det skal være muligt at gemme sider som templates der kan bruges til at hurtigt oprette lignende sider eller bruger.
+    \item Dokumentation: Der skal være et udførlig dokumentation i form af et rapport til produktet
+	\end{enumerate}
+    
+\paragraph{Reliability}
+	\begin{enumerate}
+	\item Backup: for hvert 10. minut skal der laves et backup af databasen.
+    \item Når en fejl optræder i systemet eller når data ikke er tilgængelig skal systemet sende en logfil til systemadministratoren.
+    \item Servers skal være fault tolerant, hvis en server bryder sammen, skal der være backup server der tager loaded, indtil den anden server kan blive repareret.
+    \item Server og backup skal dele load, så der er mindre chance for overanstrenglse.
+	\end{enumerate}
+    
+\paragraph{Performance}
+	\begin{enumerate}
+	\item ElectroMOS skal kunne håndtere flere 100 sider, der udvides til flere 1.000 sider i et senere version.
+    \item Response tid: til åbning, redigering og oprettelse af en Page <0.5s
+    \item CMS skal kunne servicere webshoppen med flere hundrede sider per sekund
+    \item Systemet skal have den samme online tid som webshoppen, da denne er afhængig af data fra ElectroMOS
+	\end{enumerate}
+
+\paragraph{Supportability}
+	\begin{enumerate}
+	\item Programmeringssprog: Java, JavaFX og Java Database Connectivity (JDBC)
+    \item PostgreSQL er det fortrukkende database program.
+    \item Det skal være nemt at vedligeholde pages og bruger på et overskuelig måde, Programmeringskode skal være veldokumenteret.
+    \item Det skal være muligt at tilføje nye funktioner til systemet uden at ændre eksisterende kode.
+    \item Det skal være nemt at ændre i eksisterende kode, på en måde at det påvirker så få kåde som muligt
+    \item Systemet skal være i stand til at skalere med Electroshoppens krav og deres server. Det skal være muligt at oprette uendelig mange sider, med uendelig meget indhold, der kun er begrænset af kundernes computer og servernes ydeevne.
+    \item CMS skal selv styrer hvornår en vare sendes fra leverandøren eller fra en butik for at reducere transportudgifter.
+	\end{enumerate}
+    
+\section{Prioritering}
+Her benyttes MoSCoW-modellen til prioritering af kravene til ElectroMOS. Der er blevet prioriteret i de funktionelle krav. De punkter der er vurderet vigtigst bliver lavet først, og derved sikrer vi os at electroshoppen får et produkt der udfører det arbejde den er lavet til.
+
+\paragraph{Must have:}
+	\begin{enumerate}
+	\item Administrator skal kunne opsætte sider for webshoppen.
+    \item Log-in autorisation.
+    \item “Produkt”, “Tekst” og “Billede” templates
+	\end{enumerate}
+\paragraph{Should have:}
+	\begin{enumerate}
+	\item Skabeloner skal letanvendelige, uden brug af programmering.
+    \item Muligheden for indsamling af brugsdata fra besøgende.
+    \item “Search”, “Login”, “Menu” og “Customer” templates
+	\end{enumerate}
+\paragraph{Could have:}
+	\begin{enumerate}
+	\item Muligheden for at oprette brugerdefinerede templates
+    \item Footer template
+    \item Muligheden for ændring af valuta på priserne.
+	\end{enumerate}
+    
+\section{Opsummering}
+Når det kommer til brugervenlighed, så skal CMS’en være meget nem at bruge for brugeren, og brugeren skal ikke bruge mere end 10 timer på at lære systemet fuldt ud. I systemets ydeevne bliver der beskrevet at systemet skal have en hurtig responstid og hjemmesiderne skal være letvægts og holde sig under 512 KB i filstørrelse. 
+ 
+Der skal kunne håndteres hundredvis af sider. Systemet skal være robust over for angreb og skal være i stand til at fuldføre transaktioner uden at der går noget galt. Systemet skal også blokere andre systemer der forvolder for mange fejl eller skade, eller forsøger på det samme. Systemet skal foretage backup hvert 10. Minut, og systemet skal kunne se mulige fejl på forhånd og ikke lade det gå ud over dataens integritet. Skulle fejl opstå skal der sendes en logfil til administrator. 
+ 
+Systemet skal laves i java, javaFX og Java database connectivity (JDBC). Systemet skal være ordentligt dokumenteret, og systemet skal let kunne modificeres og vedligeholdes. Scalability for systemet skal også kunne sørge for at systemet kan udvides, og der kan være uendelig mange sider, kun begrænset at serverens styrke.
+
+
+\FloatBarrier

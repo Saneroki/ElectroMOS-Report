@@ -1,0 +1,52 @@
+\begingroup
+\let\clearpage\relax
+\let\cleardoublepage\relax
+\label{Metode}
+
+Projektet bruger softwareudviklingsprocessen Unified Process (UP) til projektstyring og gennemgår kun de første to faser af den. Grunden til dette er tids- og ressourcemangel og fordi der ikke er fokus på selve konstruktionsfasen og transitionsfasen af det endelige produkt. UP hjælper til at planlægge krav, analyse, design og specificere hvilke modeller der skal udvikles. Unified Modeling Language (UML) bruges i samarbejde med UP til at udvikle modeller der indeholder diagrammer, beskrivelser og relationer.
+
+\section{Unified Process}
+Projektet er struktureret efter Unified Process. Dette er en model, der er meget arkitektur-centrisk. Der bliver derfor lagt meget arbejde i planlægning. Til gengæld er risici for kritiske fejl drastisk lavere.
+
+Modellen er delt op i 4 faser: Inception, Elaboration, Construction og Transition. Hver af disse faser består af en række iterationer, hvor der bliver lagt vægt på forskellige aspekter.
+
+
+\begin{figure}
+  \includegraphics[width=10cm]{prolog/figurer/UP-Faser.png}
+  \caption{Unified Process faser}
+  \label{fig:UPFaser}
+\end{figure}
+
+%Figur \ref{fig:UPFaser}
+
+\paragraph{Inceptionsfasen} er fasen, hvor der bliver lagt mest vægt på krav. Kravene er generelt meget overfladiske og let læselige, da de skal vises frem til individer, der ofte ikke har meget kendskab til dette. Der bliver bl. a. beskrevet brugsmønstre, lagt en grund med en domænemodel og potentielle risici bliver fundet og tabelleret efter grad af vigtighed. Fasen afsluttes ved aflevering af inceptionsdokumentet.
+
+\paragraph{I Elaborationsfasen} bliver der lagt mere vægt i analyse. Kravene bliver uddybet yderligere, og design bliver påbegyndt. Der bliver også lagt mere vægt på implementeringen, men dette er heller ikke dækket så meget, men gradvist mere i den anden del af fasen.
+
+\paragraph{Construction- og Transitionsfasen} Disse faser vil ikke blive dækket i dette projekts forløb. Constructionsfasen er den længste fase, hvor der bliver lagt vægt på implementering. Transitionsfasen er afslutningsfasen, hvor der bliver lagt vægt på færdiggørelsen og overgang til drift.
+ 
+Fordelene ved brugen af Unified Process er rig dokumentation. Arbejdet bliver lettere i den sene del af et projekts levetid. Projektets dokumentation kan altid kigges tilbage på, når forundring opstår. Dermed undgås der mange misforståelser. Både mellem kunde og ingeniører, men også mellem ingeniørerne selv.
+
+Ulemperne ved brugen af denne model er mængden af forarbejde, før systemet endeligt kan blive implementeret. Det er en meget generel model, der kan bruges til mange projekter, hvilket gør, at der er modeller, der sandsynligvis passer bedre til det scenarie. ~\cite{A&N} side 37
+
+\section{Prioritering}
+\paragraph{MoSCoW}
+MoSCoW er en metode, der bliver brugt til at prioritere krav. Den har 4 kategorier, som kravene kan blive inddelt i, og det er: Must have, Should have, Could have og Want to have. Det er en utrolig simpel metode, men dette er også dens styrke. Den er let at forstå og let at inddele i. Dette kan også være dens svaghed, da den ikke beskriver kravene så nøje, så man ikke kan prioritere inde for hvert punkt.
+
+\subparagraph{Must have}er krav, som skal være opfyldt inde for den givne tidsperiode. Selv hvis kun ét krav her ikke er opfyldt inden da, bør projektet anses for værende en fiasko.
+\subparagraph{Should have}er krav, der er vigtige at få opfyldt, men inde kritisk indenfor den givne tidsperiode. Hvis dette krav ikke er opfyldt inden da, kan den vente til næste tidsperiode.
+\subparagraph{Could have}er krav, der er ønskede, men ikke nødvendige. De er krav, der vil forbedre brugernes oplevelse og kundens tilfredshed, men kan undlades hvis resurserne ikke er dækkende.
+\subparagraph{Want to have}er krav, der er mindst vigtige. De bliver generelt undladt, men kan på senere tidspunkt omprioriteres, hvis påkrævet. ~\cite{A&N} side 61
+
+\paragraph{FURPS+}
+Denne metode bliver brugt til at prioritere krav, men på et meget lavere plan. Den har forskellige attributer, herunder: functionality, usability, reliability, performance og supportability.
+Plusset i FURPS+, står for ekstra behov, under begrænsninger og kvalitet.
+
+Det er en metode, der inddeler kravene meget specifikt. Der bliver derfor lagt mere vægt i prioriteringen, så det er derfor en langsommere proces, men mere præcis. \cite{A&NSupplements} side 10 - 11.
+
+\paragraph{UML}
+De diagrammer der er blevet udviklet til at illustrer Electroshoppens CMS system, er primært baseret på Unified Modeling Language eller UML. UML er et standard struktur for opsætning af diagrammer som skal beskrive sit system til stakeholders der ikke har været med til at lave programmet. 
+Det positive ved UML er primært at der er en samlet forståelse for hvordan digrammer skal opbygges. hvilket gør at der er en samlet forståelse for de produkter der bliver udviklet ved brug af UML. ~\cite{A&N} chapter 1
+ 
+
+\endgroup

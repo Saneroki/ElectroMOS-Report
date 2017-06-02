@@ -1,0 +1,64 @@
+%\section{Overvejelser, beslutninger og resultater}
+%vedr. konvertering fra design til kode illustreret gennem udvalgte centrale eksempler, samt andre vigtige implementeringsbeslutninger.
+
+Det at udvikle en CMS vha. Java og JavaFX kan være en problematisk opgave. Det kræver, at der er styr på JavaFX's måde at håndtere de forskellige Nodes på. De forskellige Containere, der indeholder dem, styrer de forskellige Nodes forskelligt fra hinanden , så der løbes jævnligt ind i situationer, hvor der skal findes en alternativ løsning. De centrale dele vil blive dækket i denne sektion. I denne sektion vil der også blive dækket implementeringen af databasen.
+
+Implementeringen sker igennem tre lag, som er opdelt efter tre forskellige former for funktionalitet. Disse findes i tre pakker:
+
+\begin{itemize}
+    \item Præsentation: guiMain
+    \item Forretningslogik: business
+    \item Persistens: persistence
+\end{itemize}
+
+Da der arbejdes på en CMS, sker der allerede meget på præsentationslaget, og grunden er, at JavaFX har mange indbyggede GUI elementer, som næsten direkte kan tilføjes. Problemet er bare: hvordan skal det tolkes og implementeres? På Webshoppen skal den gemte side kunne åbnes og vises præcist som den blev skabt på CMS. Løsningen på dette blev klassen Widget.
+
+\subsection{Widget og WidgetSelector}
+Widget-klassen fungerer i en grad som en forbindelsesklasse. Hvert Widget indeholder en reference til en Node, der er en Pane med elementer, hentet direkte fra pakken guiWidget. Derudover indeholder den også navnet på .fxml filen, den er tilføjet fra. Disse filer skal dog hentes på en måde. Dertil kommer næste centrale klasse - WidgetSelector
+
+WidgetSelector har til formål at kunne hente widgets op og sende dem til klassen, som håndterer visning af brugergrænsefladen. Derfor er WidgetSelector et af de vigtigste klasser: Den bliver brugt både, når der hentes layout fra databasen samt når de laves.
+
+WidgetSelector består bl. a. af en liste, som kan tilgås udefra. Listen bliver der tilføjet til fra mappen, som den holder til. Det bliver kun gjort én gang i løbet af run-time. Det bliver gjort vha. bl. a. en filtreringsmetode, der sørger for at alle filer, der ikke ender på ”.fxml” bliver filtreret fra, så Java ikke forsøger på at hente .java filer som var det FXML. Dog bliver listen kun brugt til at vise hvilke Widgets, der kan tilføjes, men disse kan ikke tilføjes direkte til scenen, da det samme objekt ikke kan være to steder samtidigt. Dette er også et sted, hvor nogle uventede konflikter opstod. Løsningen på dette problem var at hente samme fil flere gange, hvis den er ønsket i samme layout. Fx En Search Bar vil der i de fleste tilfælde være én af, men et produktvisningsvindue vil dervære flere af.
+
+getWidget(String fileName) er metoden brugt til dette. Hvis de forskellige Widgets ikke var delt i .fxml dokumenter, ville den alternative løsning være, at hver Widget havde sin egen klasse som arver fra fx Node, og det ville have været mindre kodearbejde på det område, men til gengæld ville man ikke være i stand til at tilføje nye widgets visuelt.
+Denne metode bliver kaldt hver gang en widget bliver tilføjet til layoutet.
+Efter tilføjelsen af en widget, bliver der skabt en repræsentation af dén i forretningslaget, der hedder WidgetRepresentation, hvilket er en klasse indeholder information, som er mere relevant i forhold til hentning og gemning af data. Den er derfor meget primitiv - da den kun indeholder information nødvendigt for godkendelse af den widget, som den repræsenterer. En illustration af forholdet mellem Node, Widget og WidgetRepresentation kan ses lige under:
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{elaborationsdokumentet/figurer/relationWidgetNodeosv.png}
+  \caption{Forholdet mellem Node, Widget og WidgetRepresentation}
+  \label{fig:implementation-CMS1}
+\end{figure}
+Dette viser, at Widget-klassen indeholder en reference til en af JavaFX's egen abstrakte overklasser, og at WidgetRepresentation indeholder spor af Widget, men ikke klassen selv. Udelukkende de relevante informationer for denne. 
+
+\subsection{Hentning og Gemning af sider}
+Efter de ønskede ændringer på siden er plausible, bliver metoden AcceptLayout(String pageName) kaldt, og det er dér, det interessante sker.
+Hele metodens implementering er opdelt i flere punkter. Først bliver der tjekket, om der eksisterer en side men den pågældende beskrivelse. Det er en almen skik, at returnere ’-1’, hvis intet er fundet, og man har med primitive typer at gøre. I det tilfælde, at en allerede eksisterende side ikke eksisterer, bliver den tilføjet. Derefter går metoden videre til det næste punkt: det at opdatere alle widgets tilføjet igennem metoden updateWidgets(int PageID). Sekvensdiagrammet for gemning af layout findes under analyseafsnittet (sd b04 - Update WebPage).
+
+Metoden sørger først for, at alle .fxml filer eksisterer i en tabel i databasen. Derefter sørges at fjerne alle widgets, der tilhørte den pågældende side, da der ellers ville være duplikat data. Sidst men ikke mindst, bliver alle widgets tilføjet til databasen med referencer til siden.
+Alle siderne kan nu hentes på Webshopsapplikationen, der blev udviklet for at teste at alt blev placeret korrekt. Layoutet kan også redigeres vha. systemet, hvis der ønskes ændringer, og dette er et punkt, som er en anelse mere kompleks.
+\\
+Dette tilfælde er designet efter figuren fundet i analysedelen for hentning af layout (sd b06 - Get layout), figur \ref{fig:Sekvensdiagram-CMS-editDiagram}. I denne del begynder det rigtigt i persistenslaget, da data modtages vedrørende de forskellige widgets, efter en anmodning om data fra en bestemt side er ønsket. Al data modtaget bliver placeret i forskellige WidgetRepresentationsobjekter, der derefter bliver ført videre op til forretningslaget, hvor det bliver placeret i WidgetHandler, som sørger for håndtering af disse og konkrete Widgets. Denne klasse indeholder et HashMap til at identificere hvilke Widgets der tilhører de forskellige WidgetRepresentations. Da de bliver lavet her, bliver der ikke tilføjet en Node til denne, da det hører præsentationslaget til.
+Derefter bliver disse hentet op til præsentationslaget, hvor de bliver konverteret til brugbare widgets af systemet. Dette involverer hentning af widgets fra WidgetSelector via fxmlName fundet i WidgetRepresentation, hvorefter de bliver givet den korrekte Node samt placering i layoutet. 
+
+\section{Database implementering}
+Databasen er udviklet i PostgreSQL, da det er dette produkt gruppen har mest kendskab til. Det primære design bag databasen er at have det så simpelt som muligt, men stadig have god mulighed for at tilføje så mange attributter som er nødvendigt for at få fuldt funktionelle widgets der kan justeres som de bliver mere komplekse. Vores primære mål med databasen er at den skal være et centralt lokation, hvor den både kan tilgås fra CMS og webshoppen. Den skal også kunne tilgås uden for netværket, så man kan arbejde videre på hjemmesiden, uden nødvendigvis at være på samme netværk som selve databasen. Den mest optimale løsning er at leje en plads på en cloud-baseret platform. På den måde er det ikke nødvendigt at holde en server farm ved lige, og man sikre sig næsten 100 procent uptime på sit database, hvilket er en nødvendighed for webshoppen skal kunne bruges af kunder.
+ 
+Selve opsætningen af databasen er lavet med tanken om at en side indeholder mange widgets. Derfor er der lavet et mange til mange relation mellem widgets og side. Da vi bruger samme widgets igen og igen betyder det at en side kan indeholde mange widgets, og en widget kan blive brugt på mange sider.
+
+\begin{figure}[H]
+  \includegraphics[width=14cm]{elaborationsdokumentet/figurer/database_diagram.png}
+  \caption{Representation af database opsætning}
+  \label{fig:implementation-DB}
+\end{figure}
+\FloatBarrier
+Overstående figur viser hvordan databasen er opsat. "Site has widget" indholder alle attributer for den specifikke widget, hvorimod widget tabellen indeholder informationer omkring den generelle widget. Dette betyder hvis du skal have noget data specifikt til en widget på en specifik side, skal informationen stores i "site has widget". På den anden side hvis for eksempel alle searchbar der laves skal have en specifik attribute, så skal den stores i widget.  WidgetSelector bruger også widget for at identificerer alle eksisterende widgets.
+
+\section{Opsummering}
+Større mængder af problemer opstod under implementering, da JavaFX ikke er designet, med et system der håntere mange forskellige "fxml" filer på samme scene i tankerne. JavaFX indeholder I forvejen SceneBuilder, som er en WYSIWYG (What You See Is What You Get)platform, hvilket er samme idé, som dette CMS system bygger på. Dog er dette med henblik på design af webshop.
+Trods problemerne lykkedes det at skabe et system, der muliggør design af layouts, samt lagring og hentning af disse. Dette er med til at danne en solid grund for fremtidigt tilføjet funktionalitet, og er med til at inkludere en bredere og mere fleksibel håndtering af de forskellige widgets.
+
+
+
+
+
+\FloatBarrier

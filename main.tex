@@ -1,5 +1,185 @@
-\documentclass{article}
+\documentclass[]{report}
+
 \usepackage[utf8]{inputenc}
+
+% Packages  to use
+	\usepackage[danish]{babel}
+    \usepackage{fancyhdr} %For page header and footer
+    \usepackage[margin=2cm, bmargin=4.5cm]{geometry} %To define page margins
+    \usepackage{lastpage} %To get the last page number
+	\usepackage{chngcntr}
+    \usepackage{fourier-orns}
+    \usepackage{caption}  %For Referencer etc
+    \usepackage{graphicx} %For at tilføje figurer
+	\usepackage{placeins} %For \FloatBarrier
+    \usepackage[toc]{multitoc} %Table of content in 2 columns
+    \usepackage[modulo,switch,pagewise]{lineno} %For line numbers
+    \usepackage{csquotes}
+    \usepackage{float}
+    \usepackage{url}
+    \usepackage[
+          backend=biber,
+          style=alphabetic,
+          sorting=ynt
+          ]{biblatex}
+    \addbibresource{epilog/References.bib}
+	
+
+
+
+%settings for the Document
+	\onecolumn
+    \linenumbers
+	\counterwithin*{chapter}{part}
+		
+
+	%Settings for Header and Footer
+    \setlength{\headheight}{53pt}% ...at least 51.60004pt
+    \renewcommand{\sectionmark}[1]{\markright{#1}}
+    \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+    \newcommand*\parttitle{}
+    \let\origpart\part
+    \renewcommand*{\part}[2][]{%
+    \ifx\\#1\\% optional argument not present?
+    \origpart{#2}%
+    \renewcommand*\parttitle{#2}%
+    \else
+    \origpart[#1]{#2}%
+    \renewcommand*\parttitle{#1}%
+    \fi
+    }
+    
+    
+      \pagestyle{fancy}{%}
+      \fancyhf{} %Clears default Header and Footer
+      %Settings for Header
+            \fancyhead[L]{\includegraphics[width=4cm]{start/figurer/sdu_logo.png}}
+            \fancyhead[C]{ 
+            	Civilingeniør i Software Engineering \\
+                Bachelor -- 2. Semester \\
+                \today
+              	 }
+            \fancyhead[R]{
+                \parttitle \hfill \\
+                \leftmark \hfill \\
+                \rightmark
+                 }
+		%Settings for Footer
+            \fancyfoot[L]{
+                Projectgruppe 2: ElectroMOS
+                \\Hamzat Alkhanov
+                \\Glenn Drescher}
+            \fancyfoot[C]{\hfill
+                \\Andreas Andersen
+                \\Kristian Kinder}
+            \fancyfoot[R]{
+                Side \textbf{\thepage{}}
+                \\Thomas Dahl
+                \\Marc Nielsen}}
+                
+\fancypagestyle{plain}{%
+\fancyhf{} % clear all header and footer fields
+\fancyhead[L]{\includegraphics[width=4cm]{start/figurer/sdu_logo.png}}
+            \fancyhead[C]{ 
+            	Civilingeniør i Software Engineering \\
+                Bachelor -- 2. Semester \\
+                \today
+              	 }
+            \fancyhead[R]{
+                \parttitle \hfill \\
+                \leftmark \hfill \\
+                \rightmark
+                 }
+          %Settings for Footer
+            \fancyfoot[L]{
+                Projectgruppe 2: ElectroMOS
+                \\Hamzat Alkhanov
+                \\Glenn Drescher}
+            \fancyfoot[C]{\hfill
+                \\Andreas Andersen
+                \\Kristian Kinder}
+            \fancyfoot[R]{
+                Side \textbf{\thepage{}}
+                \\Thomas Dahl
+                \\Marc Nielsen}}
+
+
 \begin{document}
-(Type your content here.)
+%\begin{flushleft}
+
+	%Start af Rapporten
+    \pagenumbering{Roman}
+	\input{start/Title.tex}
+	\input{start/Abstract.tex}
+    \input{start/Forord.tex}
+    \input{start/Indholdsfortegnelse.tex}
+    \input{start/Laesevejledning.tex}
+    \input{start/Redactionelt.tex}
+    
+    
+    %Prolog
+    \part{Prolog} \thispagestyle{fancy}
+    \pagenumbering{arabic}
+    \input{prolog/Indledning.tex}
+    \chapter{Metode}
+    \input{prolog/Metoder.tex}
+    
+    \input{prolog/Milepaele.tex}
+    \input{prolog/Tidsplan.tex}
+    
+    \chapter{Projektforløb}
+    \input{prolog/Projektforloeb.tex}
+    \input{prolog/Resurser.tex}
+    \input{prolog/Ricisi.tex}
+    
+    %Inceptionsdokumentet
+    \part{Inceptionsdokument} \thispagestyle{fancy}
+    
+    \input{inceptionsdokumentet/Indledning.tex}
+    \chapter{Problemstilling}
+    \input{inceptionsdokumentet/Problemstilling.tex}
+    \chapter{Forretningsmodellen}
+    \input{inceptionsdokumentet/Forretningsmodellen.tex}
+    \chapter{Krav}
+    \input{inceptionsdokumentet/Krav.tex}
+    \chapter{Delkonklusion}
+    \input{inceptionsdokumentet/Konklusion.tex}
+    
+    %Elaborationsdokumentet
+    \part{Elaborationsdokument} \thispagestyle{fancy}
+    \input{elaborationsdokumentet/Indledning.tex}
+    \chapter{Organisation}
+    \input{elaborationsdokumentet/Organisation.tex}
+    \chapter{Krav} \label{Krav}
+    \input{elaborationsdokumentet/Krav.tex}
+    \chapter{Analyse}
+    \input{elaborationsdokumentet/Analyse.tex}
+    \chapter{Design}
+    \input{elaborationsdokumentet/Design.tex}
+    \chapter{Implementering} \label{Implementering}
+    \input{elaborationsdokumentet/Implementering.tex}
+    \chapter{Test}
+    \input{elaborationsdokumentet/Test.tex}
+    
+    %Epilog
+    \part{Epilog} \thispagestyle{fancy}
+    
+    \chapter{Evaluering}
+    \input{epilog/Evaluering.tex}
+    \chapter{Konklusion}
+    \input{epilog/Konklusion.tex}
+    \input{epilog/Referenceliste.tex}
+    
+    %Bilag
+    
+    \part{Bilag} \thispagestyle{fancy}
+	\pagenumbering{Roman}
+    
+    \input{bilag/Ordbogen.tex}
+    \input{bilag/Gruppekontrakt.tex}
+    \input{bilag/Vejlederkontrakt.tex}
+    \input{bilag/Projektlog.tex}
+    \input{bilag/Kildekode.tex}
+    
+%\end{flushleft}
 \end{document}
